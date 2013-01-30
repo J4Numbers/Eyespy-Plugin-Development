@@ -1,6 +1,16 @@
 package en.m477.EyeSpy.Logging;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.bukkit.entity.Player;
@@ -21,10 +31,9 @@ import en.m477.EyeSpy.EyeSpy;
 	 * TODO Create a procedure for sorting between chat and commands
 	 */
 
-public class Logging {
+public class Logging implements Runnable {
 	
 	public static Connection conn;
-	
 	private static String host;
 	private static String username;
 	private static String password;
@@ -84,7 +93,11 @@ public class Logging {
             	EyeSpy.printWarning("No 'command' table found, attempting to create one...");
             	PreparedStatement ps = conn
             			.prepareStatement("CREATE TABLE IF NOT EXISTS `commands` ( "
-            					+ "`id` mediumint unsigned not null auto_increment"")
+            					+ "`id` mediumint unsigned not null auto_increment, "
+            					+ "`player_id` mediumint unsigned not null, "
+            					+ "`data` DATETIME not null, "
+            					+ "`command` varchar(255) not null, "
+            					+ "primary key (`id`));");
             }
         } catch (SQLException e) {
             e.printStackTrace();

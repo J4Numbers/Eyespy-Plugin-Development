@@ -17,6 +17,7 @@ public class EyeSpy extends JavaPlugin{
 	public static String name;
 	public static EyeSpy self = null;
 	
+	Logging db;
 	
 	/**
 	 * SQL variables
@@ -45,10 +46,13 @@ public class EyeSpy extends JavaPlugin{
         
         //Collect Database information
         
-        host = getConfig().getString("EyeSpy.general.host");
-        username = getConfig().getString("EyeSpy.general.username");
-        password = getConfig().getString("Eyespy.general.password");
-        database = getConfig().getString("Eyespy.general.database");
+        host = getConfig().getString("EyeSpy.database.host");
+        username = getConfig().getString("EyeSpy.database.username");
+        password = getConfig().getString("Eyespy.database.password");
+        database = getConfig().getString("Eyespy.database.database");
+        
+        Logging sqldb = new Logging(host, username, password,
+        database, this);
         
         Logging.startSql();
         
