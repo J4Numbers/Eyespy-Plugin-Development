@@ -1,0 +1,6 @@
+EyeSpy:
+  database:
+    host: "localhost"
+    username: "EyeSpy"
+    password: "EyeSpy"
+    database: "EyeSpy"

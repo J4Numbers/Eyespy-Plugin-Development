@@ -1,0 +1,7 @@
+name: EyeSpy
+version: 0.0.1
+description: Block and chat logging along with rollback functionality.
+load: STARTUP
+author: m477
+main: en.m477.EyeSpy.EyeSpy
+database: true
