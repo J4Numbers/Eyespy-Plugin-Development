@@ -5,4 +5,22 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Eyespy</name>
   <description>Eyespy plugin for the Escapecraft Server.</description>
+  <repositories>
+        <!-- Bukkit can be found at the following repository -->
+    <repository>
+          <id>bukkit-repo</id>
+          <url>http://repo.bukkit.org/content/groups/public/</url>
+        </repository>
+    </repositories>
+  
+    <dependencies>
+        <!-- Dependency information --> 
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <!-- Bukkit API Version, change if nessesary -->
+            <version>1.4.5-R1.0</version>
+        </dependency>
+    </dependencies>
+    
 </project>
