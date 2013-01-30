@@ -5,12 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.bukkit.entity.Player;
@@ -48,11 +42,11 @@ public class Logging implements Runnable {
     }
 	
 	public static void startSql() {
-		StartConnection();
+		StartConnection(username, password);
 		CreateTables();
 	}
 	
-    protected static void StartConnection() {
+    protected static void StartConnection(String username, String password) {
         String sqlUrl = String.format("jdbc:mysql://%s/%s", host, database);
 
         Properties sqlStr = new Properties();
@@ -143,4 +137,9 @@ public class Logging implements Runnable {
     		e.printStackTrace();
     	}
     }
+
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }
