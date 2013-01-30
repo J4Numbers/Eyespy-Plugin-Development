@@ -29,26 +29,24 @@ public class Logging implements Runnable {
 	
 	public static Connection conn;
 	private static String host;
-	private static String username;
-	private static String password;
 	private static String database;
 	
-    public Logging(String host, String username, String password,
-            String database, EyeSpy plugin) {
-        this.host = host;
-        this.username = username;
-        this.password = password;
-        this.database = database;
+    public Logging(String host, String database, EyeSpy plugin) {
+        this.host = EyeSpy.host;
+        this.database = EyeSpy.database;
     }
 	
-	public static void startSql() {
-		StartConnection(username, password);
+	public void startSql() {
+		StartConnection();
 		CreateTables();
 	}
 	
-    protected static void StartConnection(String username, String password) {
+    protected static void StartConnection() {
         String sqlUrl = String.format("jdbc:mysql://%s/%s", host, database);
-
+        
+	    String username = EyeSpy.username;
+	    String password = EyeSpy.password;
+	    
         Properties sqlStr = new Properties();
         sqlStr.put("user", username);
         sqlStr.put("password", password);
@@ -139,7 +137,6 @@ public class Logging implements Runnable {
     }
 
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		maintainConnection();
 	}
 }

@@ -22,8 +22,8 @@ public class EyeSpy extends JavaPlugin{
 	/**
 	 * SQL variables
 	 * @param Host
-	 * @param Usrname
-	 * @param Passwrd
+	 * @param Username
+	 * @param Password
 	 * @param Database
 	 */
 	
@@ -51,10 +51,9 @@ public class EyeSpy extends JavaPlugin{
         password = getConfig().getString("Eyespy.database.password");
         database = getConfig().getString("Eyespy.database.database");
         
-        Logging sqldb = new Logging(host, username, password,
-        database, this);
+        Logging sqldb = new Logging(host, database, this);
         
-        Logging.startSql();
+        sqldb.startSql();
         
         printInfo("EyeSpy has been enabled!");
         // TODO Insert logic to be performed when the plugin is enabled		
