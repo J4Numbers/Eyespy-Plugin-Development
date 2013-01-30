@@ -9,4 +9,6 @@ import org.bukkit.plugin.Plugin;
 
 public abstract class EyeSpyCommands implements CommandExecutor {
 	public abstract boolean onCommand(CommandSender sender, Command cmd, String label, String[] args);
+	
+	
 }
