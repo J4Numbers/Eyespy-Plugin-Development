@@ -1,10 +1,12 @@
 package en.m477.EyeSpy;
 
+import en.m477.EyeSpy.Listeners.BlockListener;
+import en.m477.EyeSpy.Listeners.ChatListener;
+import en.m477.EyeSpy.Listeners.CommandListener;
 import en.m477.EyeSpy.Logging.Logging;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.Bukkit;
 
 import java.util.logging.Logger;
 
@@ -29,7 +31,7 @@ public class EyeSpy extends JavaPlugin{
 	
 	public static String host;
 	public static String username;
-	public static String password;
+	public static String password ;
 	public static String database;
 	
 	@Override
@@ -48,19 +50,33 @@ public class EyeSpy extends JavaPlugin{
         
         host = getConfig().getString("EyeSpy.database.host");
         username = getConfig().getString("EyeSpy.database.username");
-        password = getConfig().getString("Eyespy.database.password");
-        database = getConfig().getString("Eyespy.database.database");
+        password = getConfig().getString("EyeSpy.database.password");
+        database = getConfig().getString("EyeSpy.database.database");
+        
+        printInfo(host);
+        printInfo(password);
+        printInfo(username);
+        printInfo(database);
         
         Logging sqldb = new Logging(host, database, this);
         
         sqldb.startSql();
         
+        if (!Logging.sql) {
+        	printSevere("SQL database NOT activated!");
+        }
+        
         printInfo("EyeSpy has been enabled!");
+        
+        pm.registerEvents(new ChatListener(), this);
+        pm.registerEvents(new CommandListener(), this);
+        pm.registerEvents(new BlockListener(), this);
         // TODO Insert logic to be performed when the plugin is enabled		
     }
  
     @Override
     public void onDisable() {
+    	
     	printInfo("EyeSpy has been disabled!");
         // TODO Insert logic to be performed when the plugin is disabled
     }
