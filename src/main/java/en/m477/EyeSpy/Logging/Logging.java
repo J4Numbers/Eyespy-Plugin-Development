@@ -241,7 +241,8 @@ public class Logging implements Runnable {
     		PreparedStatement ps = conn
     				.prepareStatement("INSERT INTO `blocks` (`date`, `player_id`, `worldname`, `blockname`, `blockdata`, "
     						+ "`x`, `y`, `z`, `place/break`) VALUES ( '"
-    						+ ArgProcessing.getDateTime() + "', '3', '"
+    						+ ArgProcessing.getDateTime() + "', '"
+    						+ playerExists(name) + "', '"
     						+ world + "', '"
     						+ type + "', '"
     						+ data + "', '"
@@ -262,7 +263,8 @@ public class Logging implements Runnable {
     	try {
     		EyeSpy.printInfo("Chat Started");
 			PreparedStatement ps = conn
-					.prepareStatement("INSERT INTO `chat` (`player_id`, `date` , `message`) VALUES ('1', '"
+					.prepareStatement("INSERT INTO `chat` (`player_id`, `date` , `message`) VALUES ('"
+						+ playerExists(name) + "', '"
 						+ ArgProcessing.getDateTime() + "', '"
 						+ Message + "');");
 			ps.executeUpdate();
@@ -278,7 +280,8 @@ public class Logging implements Runnable {
     	try {
     		EyeSpy.printInfo("Command Started");
     		PreparedStatement ps = conn
-    				.prepareStatement("INSERT INTO `commands` (`player_id`, `date`, `command`) VALUES ( '2', '"
+    				.prepareStatement("INSERT INTO `commands` (`player_id`, `date`, `command`) VALUES ( '"
+    						+ playerExists(name) + "', '"
     						+ ArgProcessing.getDateTime() + "', '"
     						+ Message + "');");
     		ps.executeUpdate();
@@ -294,9 +297,10 @@ public class Logging implements Runnable {
 		maintainConnection();
 	}
 	
-	public static void playerExists(String name) {
+	public static int playerExists(String name) {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
+		int plId = 0;
 		try {
 			ps = conn.prepareStatement("SELECT `pl_name` FROM `players` WHERE (pl_name = '" + name + "');" );
 			rs = ps.executeQuery();
@@ -306,9 +310,14 @@ public class Logging implements Runnable {
 				ps.close();
 				EyeSpy.printInfo(name + " added to the players table");
 			}
+			ps = conn.prepareStatement("SELECT * FROM `players` WHERE (pl_name = '" + name + "');" );
+			rs = ps.executeQuery();
+			rs.first();
+			plId = rs.getInt("player_id");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return plId;
 	}
 }
