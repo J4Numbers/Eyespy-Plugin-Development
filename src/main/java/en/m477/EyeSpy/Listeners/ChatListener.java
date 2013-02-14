@@ -1,41 +1,31 @@
 package en.m477.EyeSpy.Listeners;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.Listener;
 
-import en.m477.EyeSpy.SpyEvent;
 import en.m477.EyeSpy.Logging.Logging;
-
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 /**
  * Chat listener
  * @author M477h3w1012
  *
  */
-public class ChatListener {
+public class ChatListener implements Listener {
 
-	private static final String REGEX = "/.*";
+	// TODO Add a tie in to HeroChat/Mess around with HeroChat things.
+	
 	private static String Message;
 	
-	private static Pattern pattern;
-	private static Matcher matcher;
-
-	@SpyEvent
+	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onPlayerChat( AsyncPlayerChatEvent event ) {
 		if ( event.isAsynchronous() ) {
 			Player player = event.getPlayer();
 			Message = event.getMessage();
-			pattern = Pattern.compile(REGEX);
-			matcher = pattern.matcher(Message);
-			Logging.addNewChat(player, Message);
-			if (matcher.matches()) {
-			//	Logging.addNewCommand(player, Message);
-			}
-			else {
-				Logging.addNewChat(player, Message);
-			}
+			String name = player.getName();
+			Logging.addNewChat(name, Message);
 		}
 	}
 }
