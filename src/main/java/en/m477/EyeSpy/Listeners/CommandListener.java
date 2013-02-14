@@ -16,7 +16,6 @@ public class CommandListener implements Listener {
 	public static void onPlayerCommand( PlayerCommandPreprocessEvent event ) {
 		Player player = event.getPlayer();
 		String name = player.getName();
-		Logging.playerExists(name);
 		Message = event.getMessage();
 		Logging.addNewCommand(name, Message);
 	}
