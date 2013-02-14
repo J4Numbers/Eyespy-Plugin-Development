@@ -109,7 +109,7 @@ public class Logging implements Runnable {
             
             //Chat Channels
             EyeSpy.printInfo("Searching for Chat Channels table");
-            rs = conn.getMetaData().getTables(null, null, "chatchannel", null);
+            rs = conn.getMetaData().getTables(null, null, "chatchannels", null);
             if (!rs.next()) {
             	EyeSpy.printWarning("No 'chatchannels' table found, attempting to create one...");
             	PreparedStatement ps = conn
