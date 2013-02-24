@@ -11,9 +11,9 @@ import en.m477.EyeSpy.EyeSpy;
 import en.m477.EyeSpy.Util.ArgProcessing;
 
 	/**
-	 * 
+	 * Main logging class... logs stuff.
 	 * @author M477h3w1012
-	 *
+	 * 
 	 */
 
 	/* Notes for creation
@@ -28,11 +28,20 @@ public class Logging implements Runnable {
 	private static String database;
 	public static boolean sql;
 	
+	/**
+	 * Gets the information required for connecting.
+	 * @param host Sets the host address of the server
+	 * @param database Sets the database to use
+	 * @param plugin
+	 */
     public Logging(String host, String database, EyeSpy plugin) {
         Logging.host = EyeSpy.host;
         Logging.database = EyeSpy.database;
     }
 	
+    /**
+     * This is called once, upon startup of the server, and performs the checks to make sure that the plugin is ready to go.
+     */
 	public void startSql() {
 		startConnection();
 		if (sql) {
@@ -41,6 +50,9 @@ public class Logging implements Runnable {
 		
 	}
 	
+	/**
+	 * This is called upon startup and logs into the database using the information found in the config file.
+	 */
     protected void startConnection() {
     	sql = true;
         String sqlUrl = String.format("jdbc:mysql://%s/%s", host, database);
@@ -59,6 +71,9 @@ public class Logging implements Runnable {
         }
     }
     
+    /**
+     * This is called whenever the plugin runs, it will systematically run through the database, making sure that all tables exist, if it finds a missing table, it will add it.
+     */
     protected void createTables() {
         try {
             //Blocks
@@ -226,6 +241,10 @@ public class Logging implements Runnable {
         }
     }
     
+    /**
+     * Thanks to Serubin for his use of this maintainConnection class to stop the database from timing out and ending the connection needed to run smoothly.
+     * @author Serubin323, Solomon Rubin
+     */
     public static void maintainConnection() {
         PreparedStatement ps = null;
         try {
@@ -238,6 +257,18 @@ public class Logging implements Runnable {
         EyeSpy.self.log.info("EyeSpy has checked in with database");
     }
     
+    /**
+     * Adds the new block events found in the en.m477.EyeSpy.Listeners.BlockListener class. Each one fulfils the requirements for a standard SQL string.
+     * @param name The name of the entity that triggered the block change
+     * @param type The block that was changed, in ID form. This will be translated within the website
+     * @param data Any additional data that the block possesses, such as direction
+     * @param broken The state of the block, 0 is broken, 1 is placed, 2 is ignited, 3 is moved
+     * @param x X Co-ordinate of the block
+     * @param y Y Co-ordinate of the block
+     * @param z Z Co-ordinate of the block
+     * @param world The world that the block resides in
+     * @throws e.printStackTrace should the SQL string fail
+     */
     public static void addNewBlock(String name, int type, byte data, byte broken, int x, int y, int z, String world) {
     	try {
     		EyeSpy.printInfo("Block Hit!");
@@ -262,6 +293,13 @@ public class Logging implements Runnable {
     	}
     }
     
+    /**
+     * Adds any chatter that occurs on the server into the database. This requires that the server is running HeroChat
+     * @param name The name of the player sending the chatter
+     * @param ch_name The name of the channel the chatter is occuring within
+     * @param Message The actual chatter
+     * @throws e.printStackTrace If the command fails
+     */
     public static void addNewChat(String name, String ch_name, String Message) {
     	try {
     		EyeSpy.printInfo("Chat Started");
@@ -280,6 +318,12 @@ public class Logging implements Runnable {
 		}
 	}
     
+    /**
+     * Adds any commands used on the server into the database.
+     * @param name This is the name of the entity sending the command
+     * @param Message This is the command itself
+     * @throws e.printStackTrace If the command should fail
+     */
     public static void addNewCommand(String name, String Message) {
     	try {
     		EyeSpy.printInfo("Command Started");
@@ -296,11 +340,20 @@ public class Logging implements Runnable {
     		e.printStackTrace();
     	}
     }
-
+    
+    /**
+     * Stub for keeping the connection open, will add a timer to this soon.
+     */
 	public void run() {
 		maintainConnection();
 	}
 	
+	/**
+	 * Checks within the chatchannels database for any existing channels of that name. If it doesn't find it, it will add it to the table, and return the id no matter what
+	 * @param ch_name The name of the channel that is being checked
+	 * @return chId This is the ID of the channel in the chatchannel table, passed back to the chat table
+	 * @throws e.printStackTrace If the command should fail
+	 */
 	public static int channelExists(String ch_name) {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -325,6 +378,12 @@ public class Logging implements Runnable {
 		return chId;
 	}
 	
+	/**
+	 * Checks within the players table for any existing players that match the parameter. If there are no matching names, the player will be added and their ID returned no matter what.
+	 * @param name This is the players name which is being checked
+	 * @return plId This is the ID of the player that was checked
+	 * @throws e.printStackTrace If the command should fail
+	 */
 	public static int playerExists(String name) {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -349,6 +408,12 @@ public class Logging implements Runnable {
 		return plId;
 	}
 	
+	/**
+	 * This checks the worlds table for any existing worlds with that name. If no worlds are found which match the parameter, a new row will be inserted into the table, the ID will be returned no matter what.
+	 * @param world This is the name of the world that is to be checked
+	 * @return wlId This is the ID of the world that was checked
+	 * @throws e.printStackTrace If the command should fail
+	 */
 	public static int worldExists(String world) {
 		ResultSet rs = null;
 		PreparedStatement ps = null;

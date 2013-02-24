@@ -10,6 +10,11 @@ import org.bukkit.plugin.PluginManager;
 
 import java.util.logging.Logger;
 
+/**
+ * Base class for EyeSpy. Main parts are the onEnable(), onDisable(), and the print areas at the moment.
+ * @author Matthew Ball
+ *
+ */
 public class EyeSpy extends JavaPlugin{
 	
 	public EyeSpy plugin;
@@ -21,19 +26,14 @@ public class EyeSpy extends JavaPlugin{
 	
 	Logging db;
 	
-	/**
-	 * SQL variables
-	 * @param Host
-	 * @param Username
-	 * @param Password
-	 * @param Database
-	 */
-	
 	public static String host;
 	public static String username;
 	public static String password ;
 	public static String database;
 	
+	/**
+	 * This is the onEnable class for when the plugin starts up. Basic checks are run for the version, name and information of the plugin, then startup occurs.
+	 */
 	@Override
     public void onEnable(){
         
@@ -74,6 +74,9 @@ public class EyeSpy extends JavaPlugin{
         // TODO Insert logic to be performed when the plugin is enabled		
     }
  
+	/**
+	 * The disable needs work to be completed, namely a routine which cuts connection with the database a bit more elegantly than it currently does.
+	 */
     @Override
     public void onDisable() {
     	
@@ -81,14 +84,26 @@ public class EyeSpy extends JavaPlugin{
         // TODO Insert logic to be performed when the plugin is disabled
     }
     
+    /**
+     * Prints a SEVERE warning to the console.
+     * @param line This is the error message
+     */
     public static void printSevere(String line) {
       self.log.severe("[EyeSpy] " + line);
     }
     
+    /**
+     * Prints a WARNING to the console.
+     * @param line This is the error message
+     */
     public static void printWarning(String line) {
       self.log.warning("[EyeSpy] " + line);
     }
     
+    /**
+     * Prints INFO to the console
+     * @param line This is the information
+     */
     public static void printInfo(String line) {
       self.log.info("[EyeSpy] " + line);
     }

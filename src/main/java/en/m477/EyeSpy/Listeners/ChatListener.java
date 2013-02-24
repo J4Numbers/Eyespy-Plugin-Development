@@ -11,16 +11,18 @@ import com.herocraftonline.dthielke.herochat.channels.Channel;
 import com.herocraftonline.dthielke.herochat.event.ChannelChatEvent;
 
 /**
- * Chat listener
+ * Chat listener, listens to any chatter on the server. Requires HeroChat at the moment.
  * @author M477h3w1012
- *
  */
 public class ChatListener implements Listener {
-
-	// TODO Add a tie in to HeroChat/Mess around with HeroChat things.
 	
 	private static String Message;
 	
+	/**
+	 * This goes through the chat event, if it is sent by the player, their name is gathered, otherwise it defaults to 'server'. This event is dependent on HeroChat and returns the channel name, the player name, and the message sent.
+	 * @param HeroChat.ChannelChatEvent
+	 * @return SQL variables
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onPlayerChat( ChannelChatEvent event ) {
 		String name = null;
