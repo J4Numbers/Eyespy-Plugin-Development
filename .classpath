@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="target/classes" path="src/main/java">
+	<classpathentry excluding="en/m477/EyeSpy/Listeners/BlockListener.java" kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
@@ -32,6 +32,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="G:/GitHub2/Eyespy-Plugin-Development/dep/HeroChat.jar"/>
+	<classpathentry kind="lib" path="G:/Dev/Coursework/Server/Bukkit/plugins/HeroChat.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

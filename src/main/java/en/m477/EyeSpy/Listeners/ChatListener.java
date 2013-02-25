@@ -4,11 +4,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import en.m477.EyeSpy.EyeSpy;
-import en.m477.EyeSpy.Logging.Logging;
-
 import com.herocraftonline.dthielke.herochat.channels.Channel;
 import com.herocraftonline.dthielke.herochat.event.ChannelChatEvent;
+
+import en.m477.EyeSpy.EyeSpy;					//Left in for debug purposes at the moment.
+import en.m477.EyeSpy.Logging.Logging;
 
 /**
  * Chat listener, listens to any chatter on the server. Requires HeroChat at the moment.

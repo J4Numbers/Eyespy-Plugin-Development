@@ -1,6 +1,6 @@
 package en.m477.EyeSpy;
 
-import en.m477.EyeSpy.Listeners.BlockListener;
+//import en.m477.EyeSpy.Listeners.BlockListener; Excluded for this build
 import en.m477.EyeSpy.Listeners.ChatListener;
 import en.m477.EyeSpy.Listeners.CommandListener;
 import en.m477.EyeSpy.Logging.Logging;
@@ -70,7 +70,7 @@ public class EyeSpy extends JavaPlugin{
         
         pm.registerEvents(new ChatListener(), this);
         pm.registerEvents(new CommandListener(), this);
-        pm.registerEvents(new BlockListener(), this);
+        //pm.registerEvents(new BlockListener(), this); Excluded for this build
         // TODO Insert logic to be performed when the plugin is enabled		
     }
  
