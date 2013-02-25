@@ -21,6 +21,16 @@ import en.m477.EyeSpy.Logging.Logging;
 
 public class BlockListener implements Listener {
 	
+	public static void BlockInfo(Block block, String name, byte broken) {
+		int x = block.getX();
+		int y = block.getY();
+		int z = block.getZ();
+		int type = block.getTypeId();
+		byte data = block.getData();
+		String world = block.getWorld().getName();
+		Logging.addNewBlock(name, type, data, broken, x, y, z, world);
+	}
+	
 	/**
 	 * Block Break listener. Once a block is broken, it sends the variables to the en.m477.EyeSpy.Logging.Logging class to be placed into the SQL string, 0 means break.
 	 * @param BlockBreakEvent
@@ -31,14 +41,8 @@ public class BlockListener implements Listener {
 	public static void onBlockBreak( BlockBreakEvent event ) {
 		String name = event.getPlayer().getName();
 		Block block = event.getBlock();
-		int x = block.getX();
-		int y = block.getY();
-		int z = block.getZ();
-		int type = block.getTypeId();
-		byte data = block.getData();
-		String world = block.getWorld().getName();
 		byte broken = 0;
-		Logging.addNewBlock(name, type, data, broken, x, y, z, world);
+		BlockInfo(block, name, broken);
 	}
 	
 	/**
@@ -50,14 +54,8 @@ public class BlockListener implements Listener {
 	public static void onBlockPlace( BlockPlaceEvent event ) {
 		String name = event.getPlayer().getName();
 		Block block = event.getBlock();
-		int x = block.getX();
-		int y = block.getY();
-		int z = block.getZ();
-		int type = block.getTypeId();
-		byte data = block.getData();
-		String world = block.getWorld().getName();
 		byte broken = 1;
-		Logging.addNewBlock(name, type, data, broken, x, y, z, world);
+		BlockInfo(block, name, broken);
 	}
 	
 	/**
@@ -69,14 +67,8 @@ public class BlockListener implements Listener {
 	public static void onBlockFade( BlockFadeEvent event ) {
 		String name = "Natural Causes";
 		Block block = event.getBlock();
-		int x = block.getX();
-		int y = block.getY();
-		int z = block.getZ();
-		int type = block.getTypeId();
-		byte data = block.getData();
-		String world = block.getWorld().getName();
 		byte broken = 0;
-		Logging.addNewBlock(name, type, data, broken, x, y, z, world);
+		BlockInfo(block, name, broken);
 	}
 	
 	/**
@@ -88,14 +80,8 @@ public class BlockListener implements Listener {
 	public static void onBlockForm( BlockFormEvent event ) {
 		String name = "Natural Causes";
 		Block block = event.getBlock();
-		int x = block.getX();
-		int y = block.getY();
-		int z = block.getZ();
-		int type = block.getTypeId();
-		byte data = block.getData();
-		String world = block.getWorld().getName();
 		byte broken = 1;
-		Logging.addNewBlock(name, type, data, broken, x, y, z, world);
+		BlockInfo(block, name, broken);
 	}
 	
 	/**
@@ -107,14 +93,8 @@ public class BlockListener implements Listener {
 	public static void onLeafDecay( LeavesDecayEvent event ) {
 		String name = "Natural Causes";
 		Block block = event.getBlock();
-		int x = block.getX();
-		int y = block.getY();
-		int z = block.getZ();
-		int type = block.getTypeId();
-		byte data = block.getData();
-		String world = block.getWorld().getName();
 		byte broken = 0;
-		Logging.addNewBlock(name, type, data, broken, x, y, z, world);
+		BlockInfo(block, name, broken);
 	}
 	
 	/**
@@ -126,14 +106,8 @@ public class BlockListener implements Listener {
 	public static void onBlockIgnite( BlockIgniteEvent event ) {
 		String name = event.getPlayer().getName();
 		Block block = event.getBlock();
-		int x = block.getX();
-		int y = block.getY();
-		int z = block.getZ();
-		int type = block.getTypeId();
-		byte data = block.getData();
-		String world = block.getWorld().getName();
 		byte broken = 2;
-		Logging.addNewBlock(name, type, data, broken, x, y, z, world);
+		BlockInfo(block, name, broken);
 	}
 	
 	/**
@@ -147,16 +121,10 @@ public class BlockListener implements Listener {
 		ListIterator<Block> E = Extend.listIterator();
 		while (E.hasNext()) {
 			int iE = E.nextIndex();
-			Block next = Extend.get(iE);
+			Block block = Extend.get(iE);
 			String name = "Piston";
-			int x = next.getX();
-			int y = next.getY();
-			int z = next.getZ();
-			int type = next.getTypeId();
-			byte data = next.getData();
-			String world = next.getWorld().getName();
 			byte broken = 3;
-			Logging.addNewBlock(name, type, data, broken, x, y, z, world);
+			BlockInfo(block, name, broken);
 			E.next();
 		}
 	}
@@ -184,22 +152,19 @@ public class BlockListener implements Listener {
 		}
 	}
 	
+	/*
 	/**
 	 * Fired when gravity/other physics affect a block. /Should/ work for multiple gravitised blocks, but testing will have to confirm. Sends the variables to the logging class. 3 is movement.
 	 * @param BlockPhysicsEvent
 	 * @return SQL variables
 	 */
+	/*
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onPhysicsEvent ( BlockPhysicsEvent event ) {
-		Block changed = event.getBlock();
+		Block block = event.getBlock();
 		String name = "Physics";
-		int x = changed.getX();
-		int y = changed.getY();
-		int z = changed.getZ();
-		int type = changed.getTypeId();
-		byte data = changed.getData();
-		String world = changed.getWorld().getName();
 		byte broken = 3;
-		Logging.addNewBlock(name, type, data, broken, x, y, z, world);
+		BlockInfo(block, name, broken);
 	}
+	*/
 }

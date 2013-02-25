@@ -75,10 +75,11 @@ public class Logging implements Runnable {
      * This is called whenever the plugin runs, it will systematically run through the database, making sure that all tables exist, if it finds a missing table, it will add it.
      */
     protected void createTables() {
+    	ResultSet rs;
         try {
-            //Blocks
+            /*Blocks Removed from this build
             EyeSpy.printInfo("Searching for Blocks table");
-            ResultSet rs = conn.getMetaData().getTables(null, null, "blocks", null);
+            rs = conn.getMetaData().getTables(null, null, "blocks", null);
             if (!rs.next()) {
                 EyeSpy.printWarning("No 'blocks' table found, attempting to create one...");
                 PreparedStatement ps = conn
@@ -100,7 +101,7 @@ public class Logging implements Runnable {
             } else { 
             	EyeSpy.printInfo("Table found");
             }
-            rs.close();
+            rs.close();*/
             
             //Chat
             EyeSpy.printInfo("Searching for Chat table");
@@ -141,7 +142,7 @@ public class Logging implements Runnable {
             }
             rs.close();
             
-            //Chests
+            /*Chests Removed from this build
             EyeSpy.printInfo("Searching for Chests table");
             rs = conn.getMetaData().getTables(null, null, "chests", null);
             if (!rs.next()) {
@@ -163,7 +164,7 @@ public class Logging implements Runnable {
             } else {
             	EyeSpy.printInfo("Table found");
             }
-            rs.close();
+            rs.close(); */
             
             //Commands
             EyeSpy.printInfo("Searching for Commands table");
@@ -203,7 +204,7 @@ public class Logging implements Runnable {
             }
             rs.close();
             
-            //World
+            /*World Removed from this build
             EyeSpy.printInfo("Searching for Worlds table");
             rs = conn.getMetaData().getTables(null, null, "world", null);
             if (!rs.next()) {
@@ -219,9 +220,9 @@ public class Logging implements Runnable {
             } else {
             	EyeSpy.printInfo("Table found");
             }
-            rs.close();
+            rs.close(); */
             
-            //Users
+            /*Users Removed from this build (Might need to remove entirely)
             EyeSpy.printInfo("Searching for Users table");
             rs = conn.getMetaData().getTables(null, null, "users", null);
             if (!rs.next()) {
@@ -235,7 +236,7 @@ public class Logging implements Runnable {
             	ps.executeUpdate();
             	ps.close();
             	EyeSpy.printWarning("'users' table created!");
-            }
+            } */
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -268,6 +269,7 @@ public class Logging implements Runnable {
      * @param z Z Co-ordinate of the block
      * @param world The world that the block resides in
      * @throws e.printStackTrace should the SQL string fail
+     * @deprecated For this build
      */
     public static void addNewBlock(String name, int type, byte data, byte broken, int x, int y, int z, String world) {
     	try {
