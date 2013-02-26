@@ -67,6 +67,7 @@ public class Logging implements Runnable {
             conn = DriverManager.getConnection(sqlUrl, sqlStr);
         } catch (SQLException e) {
             EyeSpy.printSevere("A MySQL connection could not be made");
+            e.printStackTrace();
             sql = false;
         }
     }
@@ -306,11 +307,11 @@ public class Logging implements Runnable {
     	try {
     		EyeSpy.printInfo("Chat Started");
 			PreparedStatement ps = conn
-					.prepareStatement("INSERT INTO `chat` (`player_id`, `ch_id`, `date` , `message`) VALUES ('"
-						+ playerExists(name) + "', '"
-						+ channelExists(ch_name) + "', '"
-						+ ArgProcessing.getDateTime() + "', '"
-						+ Message + "');");
+					.prepareStatement("INSERT INTO `chat` (`player_id`, `ch_id`, `date`, `message`) VALUES (`"
+						+ playerExists(name) + "`, `"
+						+ channelExists(ch_name) + "`, `"
+						+ ArgProcessing.getDateTime() + "`, `"
+						+ Message + "`);");
 			ps.executeUpdate();
 			ps.close();
 			EyeSpy.printInfo("Chat Successful!");
@@ -330,10 +331,10 @@ public class Logging implements Runnable {
     	try {
     		EyeSpy.printInfo("Command Started");
     		PreparedStatement ps = conn
-    				.prepareStatement("INSERT INTO `commands` (`player_id`, `date`, `command`) VALUES ( '"
-    						+ playerExists(name) + "', '"
-    						+ ArgProcessing.getDateTime() + "', '"
-    						+ Message + "');");
+    				.prepareStatement("INSERT INTO `commands` (`player_id`, `date`, `command`) VALUES ( `"
+    						+ playerExists(name) + "`, `"
+    						+ ArgProcessing.getDateTime() + "`, `"
+    						+ Message + "`);");
     		ps.executeUpdate();
     		ps.close();
     		EyeSpy.printInfo("Command Log Successful!");
