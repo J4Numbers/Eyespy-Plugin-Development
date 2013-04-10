@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import com.herocraftonline.dthielke.herochat.channels.Channel;
 import com.herocraftonline.dthielke.herochat.event.ChannelChatEvent;
 
-import en.m477.EyeSpy.EyeSpy;					//Left in for debug purposes at the moment.
+//import en.m477.EyeSpy.EyeSpy;					//Left in for debug purposes at the moment.
 import en.m477.EyeSpy.Logging.Logging;
 
 /**
