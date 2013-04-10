@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 import en.m477.EyeSpy.EyeSpy;
@@ -78,6 +79,44 @@ public class Logging implements Runnable {
     protected void createTables() {
     	ResultSet rs;
         try {
+
+            //Players
+            EyeSpy.printInfo("Searching for players table");
+            rs = conn.getMetaData().getTables(null, null, "players", null);
+            if (!rs.next()) {
+            	EyeSpy.printWarning("No 'players' table found, attempting to create one...");
+            	PreparedStatement ps = conn
+            			.prepareStatement("CREATE TABLE IF NOT EXISTS `players` ( "
+            					+ "`player_id` mediumint unsigned not null auto_increment, "
+            					+ "`pl_name` varchar(30) not null, "
+            					+ "primary key (`player_id`));" );
+            	ps.executeUpdate();
+            	ps.close();
+            	EyeSpy.printWarning("'players' table created!");
+            } else {
+            	EyeSpy.printInfo("Table found");
+            }
+            rs.close();
+        
+            
+            //Chat Channels
+            EyeSpy.printInfo("Searching for Chat Channels table");
+            rs = conn.getMetaData().getTables(null, null, "chatchannels", null);
+            if (!rs.next()) {
+            	EyeSpy.printWarning("No 'chatchannels' table found, attempting to create one...");
+            	PreparedStatement ps = conn
+            			.prepareStatement("CREATE TABLE IF NOT EXISTS `chatchannels` ( "
+            					+ "`ch_id` tinyint unsigned not null auto_increment, "
+            					+ "`ch_name` varchar(30) not null, "
+            					+ "primary key (`ch_id`));" );
+            	ps.executeUpdate();
+            	ps.close();
+            	EyeSpy.printWarning("'chatchannels' table created!");
+            } else {
+            	EyeSpy.printInfo("Table found");
+            }
+            rs.close();
+            
             /*Blocks Removed from this build
             EyeSpy.printInfo("Searching for Blocks table");
             rs = conn.getMetaData().getTables(null, null, "blocks", null);
@@ -116,30 +155,14 @@ public class Logging implements Runnable {
                                 + "`date` DATETIME not null, "
                                 + "`ch_id` tinyint unsigned not null, "
                                 + "`message` varchar(255) not null, "
-                                + "primary key (`chat_id`));" );
+                                + "primary key (`chat_id`), "
+                                + "foreign key (`player_id`) REFERENCES players(`player_id`), "
+                                + "foreign key (`ch_id`) REFERENCES chatchannels(`ch_id`) );" );
                 ps.executeUpdate();
                 ps.close();
                 EyeSpy.printWarning("'chat' table created!");
             } else {
                 EyeSpy.printInfo("Table found");
-            }
-            rs.close();
-            
-            //Chat Channels
-            EyeSpy.printInfo("Searching for Chat Channels table");
-            rs = conn.getMetaData().getTables(null, null, "chatchannels", null);
-            if (!rs.next()) {
-            	EyeSpy.printWarning("No 'chatchannels' table found, attempting to create one...");
-            	PreparedStatement ps = conn
-            			.prepareStatement("CREATE TABLE IF NOT EXISTS `chatchannels` ( "
-            					+ "`ch_id` tinyint unsigned not null auto_increment, "
-            					+ "`ch_name` varchar(30) not null, "
-            					+ "primary key (`ch_id`));" );
-            	ps.executeUpdate();
-            	ps.close();
-            	EyeSpy.printWarning("'chatchannels' table created!");
-            } else {
-            	EyeSpy.printInfo("Table found");
             }
             rs.close();
             
@@ -182,24 +205,6 @@ public class Logging implements Runnable {
             	ps.executeUpdate();
             	ps.close();
             	EyeSpy.printWarning("'command' table created!");
-            } else {
-            	EyeSpy.printInfo("Table found");
-            }
-            rs.close();
-            
-            //Players
-            EyeSpy.printInfo("Searching for players table");
-            rs = conn.getMetaData().getTables(null, null, "players", null);
-            if (!rs.next()) {
-            	EyeSpy.printWarning("No 'players' table found, attempting to create one...");
-            	PreparedStatement ps = conn
-            			.prepareStatement("CREATE TABLE IF NOT EXISTS `players` ( "
-            					+ "`player_id` mediumint unsigned not null auto_increment, "
-            					+ "`pl_name` varchar(30) not null, "
-            					+ "primary key (`player_id`));" );
-            	ps.executeUpdate();
-            	ps.close();
-            	EyeSpy.printWarning("'players' table created!");
             } else {
             	EyeSpy.printInfo("Table found");
             }
@@ -307,11 +312,12 @@ public class Logging implements Runnable {
     	try {
     		EyeSpy.printInfo("Chat Started");
 			PreparedStatement ps = conn
-					.prepareStatement("INSERT INTO `chat` (`player_id`, `ch_id`, `date`, `message`) VALUES (`"
-						+ playerExists(name) + "`, `"
-						+ channelExists(ch_name) + "`, `"
-						+ ArgProcessing.getDateTime() + "`, `"
-						+ Message + "`);");
+					.prepareStatement("INSERT INTO `chat` (`player_id`, `ch_id`, `date`, `message`) VALUES (?,?,?,?)",
+                            Statement.RETURN_GENERATED_KEYS);
+			ps.setInt( 1, playerExists(name) );
+			ps.setInt( 2, channelExists(ch_name) );
+			ps.setObject( 3, ArgProcessing.getDateTime() );
+			ps.setString( 4, Message );
 			ps.executeUpdate();
 			ps.close();
 			EyeSpy.printInfo("Chat Successful!");
@@ -331,10 +337,10 @@ public class Logging implements Runnable {
     	try {
     		EyeSpy.printInfo("Command Started");
     		PreparedStatement ps = conn
-    				.prepareStatement("INSERT INTO `commands` (`player_id`, `date`, `command`) VALUES ( `"
-    						+ playerExists(name) + "`, `"
-    						+ ArgProcessing.getDateTime() + "`, `"
-    						+ Message + "`);");
+    				.prepareStatement("INSERT INTO `commands` (`player_id`, `date`, `command`) VALUES ( '"
+    						+ playerExists(name) + "', '"
+    						+ ArgProcessing.getDateTime() + "', '"
+    						+ Message + "');");
     		ps.executeUpdate();
     		ps.close();
     		EyeSpy.printInfo("Command Log Successful!");

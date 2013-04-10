@@ -7,6 +7,10 @@
   <description>Eyespy plugin for the Escapecraft Server.</description>
   
   <repositories>
+    <repository>
+          <id>herochat-repo</id>
+          <url>http://dev.escapecraft.com/maven</url>
+    </repository>
         <!-- Bukkit can be found at the following repository -->
     <repository>
           <id>bukkit-repo</id>
@@ -43,7 +47,12 @@
           <groupId>org.bukkit</groupId>
           <artifactId>bukkit</artifactId>
           <!-- Bukkit API Version, change if nessesary -->
-          <version>1.4.7-R1.0</version>
+          <version>1.5.1-R0.1</version>
+      </dependency>
+      <dependency>
+          <groupId>com.herocraftonline</groupId>
+          <artifactId>HeroChat</artifactId>
+          <version>4.10.3.2</version>
       </dependency>
   </dependencies>
     
