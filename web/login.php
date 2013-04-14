@@ -1,7 +1,9 @@
 ﻿<?php
-	require 'config.php';
-	require_once 'PasswordHash.php';
+	require_once './functions/page.php.';
+	require './functions/config.php';
+	require_once './functions/main.php';
 	session_start();
+	unset( $fail );
     if (isset($_SESSION['loggedIn'])) 
         header( "Location: index.php" );
         
@@ -9,41 +11,28 @@
         $_SESSION['active'] = "1";
     }
     
-    if ( $_POST['user'] != '' ) {
+    if ( @$_POST['user'] != '' ) {
         $username = $_POST['user'];
         $password = $_POST['pass'];
-		echo "User = " . $username . "<br />";
-        echo "Pass = " . $password . "<br />";
-		mysql_connect( $dbhost, $dbuser, $dbpass );
-		mysql_select_db( $dbforumdb );
-		$sql = "SELECT `user_id`,`username`,`user_password` FROM `phpbb_users` WHERE `username` = '" . $username . "' ";
-		$res = mysql_query( $sql );
-		$row = mysql_fetch_array( $res );
-		
-		$sql = "SELECT * FROM `phpbb_user_group` WHERE ( `user_id` = '" . $row['user_id'] . "' ) AND ( `group_id` = '8' )";
-		
-		if ( mysql_num_rows( mysql_query( $sql ) ) == 0 ) {
-			$group = true;
-		} else {
-			$group = false;
-		}
-		
-		$PasswordHasher = new PasswordHash(8, true);
-		if ( ($PasswordHasher->CheckPassword($password, $row['user_password']) ) && ( $group ) ) {
-			$_SESSION['loggedIn'] = '1';
-			header( "Location: index.php");
-			echo "Success!";
-		}
+		sqlConnect( $dbforum );
+		login( $username, $password );
     }
     
-    echo "login <br />";
-    echo "Active: " . $_SESSION['active'] . "<br />";
-    echo "loggedIn: " . @$_SESSION['loggedIn'] . "<br />";
-    echo "<br />";
+    $output = "login <br />";
+	if ( isset( $username ) ) {
+		$output .= "<font color='red'>Your username or password was incorrect</font><br />";
+	}
+    $output .= "<br />";
     
-    echo "<form name='input' action='login.php' method='post'>
-          UserName: <input type='text' name='user' /><br />
-          Password: <input type='password' name='pass' /><br />
+    $output .= "<form name='input' action='login.php' method='post'>
+          <table><tr><td>Username:</td><td><input type='text' name='user' /></td></tr>
+          <tr><td>Password:</td><td><input type='password' name='pass' /></td></tr></table>
           <input type='submit' value='Login' />
           </form>";
 ?>
+
+<HTML>
+	<?php HeaderThing( 'Login' ); ?>
+		<?php echo $output; ?>
+	<?php FooterThing(); ?>
+</HTML>

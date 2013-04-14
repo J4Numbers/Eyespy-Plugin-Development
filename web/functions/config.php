@@ -3,7 +3,7 @@
 	$dbhost = 'localhost';
 	$dbuser = 'root';
 	$dbpass = '';
-	$dbESdb = 'testing';
-	$dbforumdb = 'pr_forum';
+	$dbES = 'testing';
+	$dbforum = 'pr_forum';
 
 ?>
