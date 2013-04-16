@@ -13,7 +13,7 @@ if ( !isset($_SESSION['loggedIn']) ) {
 }
 
 if ( @$_POST["cPlayer"] == '' ) {
-    $cPlayer = "%";
+    $cPlayer = "";
 } else {
     $cPlayer = $_POST["cPlayer"];
 }
@@ -39,7 +39,7 @@ sqlConnect( $dbES );
             $plRow = mysql_fetch_array($plResult);
             $output .= "<tr>";
             $output .= "<td>" . $cmdrow['cmd_id'] . "</td>";
-            $output .= "<td>" . $cmdrow['date'] . "</td>";
+            $output .= "<td>" . date( "Y-m-d H:i:s", $cmdrow['date'] + DST($_SESSION['loggedIn']) ) . "</td>";
             $output .= "<td>" . $plRow['pl_name'] . "</td>";
             $output .= "<td>" . $cmdrow['command'] . "</td>";
             $output .= "<br />";

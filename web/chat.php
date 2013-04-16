@@ -14,13 +14,13 @@ if ( !isset($_SESSION['loggedIn']) ) {
 }
 
 if ( @$_POST["Player"] == '' ) {
-    $Player = "%";
+    $Player = "";
 } else {
     $Player = $_POST["Player"];
 }
 
 if ( @$_POST["Channel"] == '' ) {
-    $Channel = "%";
+    $Channel = "";
 } else {
     $Channel = $_POST["Channel"];
 }
@@ -49,7 +49,7 @@ sqlConnect( $dbES );
         {
             $output .= "<tr>";
             $output .= "<td>" . $row['chat_id'] . "</td>";
-            $output .= "<td>" . $row['date'] . "</td>";
+            $output .= "<td>" . date( "Y-m-d H:i:s" , $row['date'] + DST($_SESSION['loggedIn']) ) . "</td>";
             $output .= "<td>" . $row['pl_name'] . "</td>";
             $output .= "<td>" . $row['ch_name'] . "</td>";
             $output .= "<td>" . $row['message'] . "</td>";

@@ -1,5 +1,5 @@
 ﻿<?php
-	require_once './functions/page.php.';
+	require_once './functions/page.php';
 	require './functions/config.php';
 	require_once './functions/main.php';
 	session_start();

@@ -1,5 +1,6 @@
 ﻿<?php
 	require_once './functions/page.php';
+	require_once './functions/main.php';
 	session_start();
     if ( !isset($_SESSION['loggedIn']) ) {
         if (isset($_SESSION['active']))
@@ -10,7 +11,7 @@
     }
     
     $output = "<a href='logout.php'>Log Out</a><br />";
-    $output .= "Hello " . $_SESSION['loggedIn'] . "!<br />";
+    $output .= "Hello " . idToName( $_SESSION['loggedIn'] ) . "!<br />";
     $output .= "<a href='chat.php'>Chat</a><br />";
 	$output .= "<a href='commands.php'>Commands</a><br />"
 ?>

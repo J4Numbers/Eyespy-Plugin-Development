@@ -3,10 +3,9 @@ Readme
 Welcome to the EyeSpy plugin help. So follows the documentation and help information about this plugin
 
 1.0: Installation
-
 1.1: Plugin Installation
 
-HeroChat, found at [INSERT LINK HERE], is required as a prerequisite to load this plugin. To install HeroChat on your server, drag and drop the downloaded .jar file into your server plugins folder.
+HeroChat, found at http://dev.bukkit.org/server-mods/herochat/, is required as a prerequisite to load this plugin. To install HeroChat on your server, drag and drop the downloaded .jar file into your server plugins folder.
 
 To install the EyeSpy plugin itself, simply open up the plugins folder located within your server folder and drop the .jar file for EyeSpy inside. After this, run the server once (yes you will get a lot of errors, but that is normal) and stop it a moment later.
 
@@ -61,7 +60,7 @@ This could be due to a number of reasons, firstly check that your details for th
 
 3.2: The console is giving out errors whenever someone does something!
 
-This means that the tables are not letting you enter data. Go into your SQL console and check that the user you have assigned to this database has editing rights for the tables, and check that the tables are there for that matter.
+This means that the tables are not letting you enter data. Go into your SQL console and check that the user you have assigned to this database has editing rights for the tables, and check that the tables are there for that matter. The error given in the console will be as specific as it can be, but it is always possible that something else entirely has broken in regards to the plugin. In this case, send the console log to the contact address below for the logs pertaining to EyeSpy.
 
 3.3: The website isn't letting me log in!
 
