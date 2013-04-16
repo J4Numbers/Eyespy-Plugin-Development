@@ -152,7 +152,7 @@ public class Logging implements Runnable {
                         .prepareStatement("CREATE TABLE IF NOT EXISTS `chat` ( "
                                 + "`chat_id` mediumint unsigned not null auto_increment, "
                                 + "`player_id` mediumint unsigned not null, "
-                                + "`date` DATETIME not null, "
+                                + "`date` int(11) unsigned not null, "
                                 + "`ch_id` tinyint unsigned not null, "
                                 + "`message` varchar(255) not null, "
                                 + "primary key (`chat_id`), "
@@ -174,7 +174,7 @@ public class Logging implements Runnable {
             	PreparedStatement ps = conn
             			.prepareStatement("CREATE TABLE IF NOT EXISTS `chests` ( "
             					+ "`access_id` mediumint unsigned not null auto_increment, "
-            					+ "`date` DATETIME not null, "
+            					+ "`date` mediumint not null, "
             					+ "`player_id` mediumint unsigned not null, "
             					+ "`x` mediumint signed not null, "
             					+ "`y` mediumint unsigned not null, "
@@ -199,9 +199,10 @@ public class Logging implements Runnable {
             			.prepareStatement("CREATE TABLE IF NOT EXISTS `commands` ( "
             					+ "`cmd_id` mediumint unsigned not null auto_increment, "
             					+ "`player_id` mediumint unsigned not null, "
-            					+ "`date` DATETIME not null, "
+            					+ "`date` int(11) unsigned not null, "
             					+ "`command` varchar(255) not null, "
-            					+ "primary key (`cmd_id`));" );
+            					+ "primary key (`cmd_id`), "
+            					+ "foreign key (`player_id`) REFERENCES players(`player_id`) );" );
             	ps.executeUpdate();
             	ps.close();
             	EyeSpy.printWarning("'command' table created!");
@@ -310,17 +311,15 @@ public class Logging implements Runnable {
      */
     public static void addNewChat(String name, String ch_name, String Message) {
     	try {
-    		EyeSpy.printInfo("Chat Started");
 			PreparedStatement ps = conn
 					.prepareStatement("INSERT INTO `chat` (`player_id`, `ch_id`, `date`, `message`) VALUES (?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS);
 			ps.setInt( 1, playerExists(name) );
 			ps.setInt( 2, channelExists(ch_name) );
-			ps.setObject( 3, ArgProcessing.getDateTime() );
+			ps.setLong( 3, ArgProcessing.getDateTime() );
 			ps.setString( 4, Message );
 			ps.executeUpdate();
 			ps.close();
-			EyeSpy.printInfo("Chat Successful!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -335,15 +334,14 @@ public class Logging implements Runnable {
      */
     public static void addNewCommand(String name, String Message) {
     	try {
-    		EyeSpy.printInfo("Command Started");
     		PreparedStatement ps = conn
-    				.prepareStatement("INSERT INTO `commands` (`player_id`, `date`, `command`) VALUES ( '"
-    						+ playerExists(name) + "', '"
-    						+ ArgProcessing.getDateTime() + "', '"
-    						+ Message + "');");
+    				.prepareStatement("INSERT INTO `commands` (`player_id`, `date`, `command`) VALUES (?,?,?)",
+    						Statement.RETURN_GENERATED_KEYS);
+    		ps.setInt( 1, playerExists(name) );
+    		ps.setLong( 2, ArgProcessing.getDateTime() );
+    		ps.setString( 3, Message );
     		ps.executeUpdate();
     		ps.close();
-    		EyeSpy.printInfo("Command Log Successful!");
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		e.printStackTrace();
@@ -374,7 +372,6 @@ public class Logging implements Runnable {
 				ps = conn.prepareStatement("INSERT INTO `chatchannels` (`ch_name`) VALUES ( '" + ch_name + "' );" );
 				ps.executeUpdate();
 				ps.close();
-				EyeSpy.printInfo(ch_name + " added to the channels table");
 			}
 			ps = conn.prepareStatement("SELECT * FROM `chatchannels` WHERE (ch_name = '" + ch_name + "');" );
 			rs = ps.executeQuery();
@@ -404,7 +401,6 @@ public class Logging implements Runnable {
 				ps = conn.prepareStatement("INSERT INTO `players` (`pl_name`) VALUES ( '" + name + "');" );
 				ps.executeUpdate();
 				ps.close();
-				EyeSpy.printInfo(name + " added to the players table");
 			}
 			ps = conn.prepareStatement("SELECT * FROM `players` WHERE (pl_name = '" + name + "');" );
 			rs = ps.executeQuery();
