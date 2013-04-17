@@ -4,6 +4,7 @@ function HeaderThing( $title ) {
 	$r = "<head>
 			<title>" . $title . "</title>
 			<link type='text/css' rel='stylesheet' href='./css/css.css'>
+			<link rel='shortcut icon' type='image/ico' href='./images/EyeSpyIcon.ico'>
 		</head>
 		<body>
 			<div class='main'><div class='header'>
