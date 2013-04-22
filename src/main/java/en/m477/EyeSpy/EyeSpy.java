@@ -53,12 +53,7 @@ public class EyeSpy extends JavaPlugin{
         password = getConfig().getString("EyeSpy.database.password");
         database = getConfig().getString("EyeSpy.database.database");
         
-        printInfo(host);
-        printInfo(password);
-        printInfo(username);
-        printInfo(database);
-        
-        Logging sqldb = new Logging(host, database, this);
+        Logging sqldb = new Logging();
         
         sqldb.startSql();
         
@@ -107,4 +102,9 @@ public class EyeSpy extends JavaPlugin{
     public static void printInfo(String line) {
       self.log.info("[EyeSpy] " + line);
     }
+    
+    public static void printDebug(String line) {
+      self.log.info("[EyeSpy DEBUG] " + line);
+    }
+    
 }

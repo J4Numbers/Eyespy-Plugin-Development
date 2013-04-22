@@ -1,11 +1,12 @@
 <?php
 
-function HeaderThing( $title ) {
+function HeaderThing( $title, $head = '' ) {
 	$r = "<head>
 			<title>" . $title . "</title>
 			<link type='text/css' rel='stylesheet' href='./css/css.css'>
-			<link rel='shortcut icon' type='image/ico' href='./images/EyeSpyIcon.ico'>
-		</head>
+			<link rel='shortcut icon' type='image/ico' href='./images/EyeSpyIcon.ico'>"
+			 . $head . 
+		"</head>
 		<body>
 			<div class='main'><div class='header'>
 				<div id='img'>

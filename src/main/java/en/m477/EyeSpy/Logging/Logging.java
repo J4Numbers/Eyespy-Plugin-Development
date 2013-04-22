@@ -31,11 +31,8 @@ public class Logging implements Runnable {
 	
 	/**
 	 * Gets the information required for connecting.
-	 * @param host Sets the host address of the server
-	 * @param database Sets the database to use
-	 * @param plugin
 	 */
-    public Logging(String host, String database, EyeSpy plugin) {
+    public Logging() {
         Logging.host = EyeSpy.host;
         Logging.database = EyeSpy.database;
     }
@@ -74,7 +71,7 @@ public class Logging implements Runnable {
     }
     
     /**
-     * This is called whenever the plugin runs, it will systematically run through the database, making sure that all tables exist, if it finds a missing table, it will add it.
+     * This is called whenever the plugin runs from startup, it will systematically run through the database, making sure that all tables exist, if it finds a missing table, it will add it.
      */
     protected void createTables() {
     	ResultSet rs;
