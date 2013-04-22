@@ -27,23 +27,23 @@ function login( $username, $password ) {
 	}
 	$row = mysql_fetch_array( $res );
 	
-	$sql = "SELECT * FROM `phpbb_user_group` WHERE ( `user_id` = '" . $row['user_id'] . "' ) AND ( `group_id` IN ( '8', '30', '29' ) )";
-	echo $row['user_id'];
-	if ( mysql_num_rows( mysql_query( $sql ) ) != 0 ) {
-		$group = true;
-	} else {
-		$group = false;
-	}
+	#$sql = "SELECT * FROM `phpbb_user_group` WHERE ( `user_id` = '" . $row['user_id'] . "' ) AND ( `group_id` IN ( '8', '30', '29' ) )";
+	#echo $row['user_id'];
+	#if ( mysql_num_rows( mysql_query( $sql ) ) != 0 ) {
+	#	$group = true;
+	#} else {
+	#	$group = false;
+	#}
 	
 	mysql_close();
 	
-	$PasswordHasher = new PasswordHash(8, true);
-	if ( ($PasswordHasher->CheckPassword($password, $row['user_password']) ) && ( $group ) ) {
+	#$PasswordHasher = new PasswordHash(8, true);
+	#if ( ($PasswordHasher->CheckPassword($password, $row['user_password']) ) && ( $group ) ) {
 		$_SESSION['loggedIn'] = $row['user_id'] ;
 		header( "Location: ./index.php");
-	} else {
-		$fail = true;
-	}
+	#} else {
+	#	$fail = true;
+	#}
 }
 
 function DST( $id ) {

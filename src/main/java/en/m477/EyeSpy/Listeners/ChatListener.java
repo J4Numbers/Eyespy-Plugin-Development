@@ -1,12 +1,15 @@
 package en.m477.EyeSpy.Listeners;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.herocraftonline.dthielke.herochat.channels.Channel;
 import com.herocraftonline.dthielke.herochat.event.ChannelChatEvent;
 
+import en.m477.EyeSpy.EyeSpy;
 //import en.m477.EyeSpy.EyeSpy;					//Left in for debug purposes at the moment.
 import en.m477.EyeSpy.Logging.Logging;
 
@@ -37,4 +40,12 @@ public class ChatListener implements Listener {
 		Logging.addNewChat(name, ch_name, Message);
 	}
 	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void onPlayerTalk( AsyncPlayerChatEvent event ) {
+		Player Player = event.getPlayer();
+		String plName = Player.getName();
+		String Message = event.getMessage();
+		
+		EyeSpy.printInfo(plName + " : " + Message);
+	}
 }
