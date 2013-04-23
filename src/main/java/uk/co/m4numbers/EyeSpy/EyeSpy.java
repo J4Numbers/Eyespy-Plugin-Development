@@ -1,9 +1,9 @@
-package en.m477.EyeSpy;
+package uk.co.m4numbers.EyeSpy;
 
-//import en.m477.EyeSpy.Listeners.BlockListener; Excluded for this build
-import en.m477.EyeSpy.Listeners.ChatListener;
-import en.m477.EyeSpy.Listeners.CommandListener;
-import en.m477.EyeSpy.Logging.Logging;
+//import uk.co.m4numbers.EyeSpy.Listeners.BlockListener; Excluded for this build
+import uk.co.m4numbers.EyeSpy.Listeners.ChatListener;
+import uk.co.m4numbers.EyeSpy.Listeners.CommandListener;
+import uk.co.m4numbers.EyeSpy.Logging.Logging;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;

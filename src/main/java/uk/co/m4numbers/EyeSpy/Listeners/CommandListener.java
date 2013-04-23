@@ -1,14 +1,14 @@
-package en.m477.EyeSpy.Listeners;
+package uk.co.m4numbers.EyeSpy.Listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.Listener;
 
-import en.m477.EyeSpy.Logging.Logging;
+import uk.co.m4numbers.EyeSpy.Logging.Logging;
 
 /**
- * Command listener, fired when someone enters a command. The listener will then send it to the en.m477.logging.logging class for assimilation... Commands are specified as any text starting with '/'
+ * Command listener, fired when someone enters a command. The listener will then send it to the uk.co.m4numbers.logging.logging class for assimilation... Commands are specified as any text starting with '/'
  * @author Matthew Ball
  *
  */

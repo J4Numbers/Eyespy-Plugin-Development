@@ -1,4 +1,4 @@
-package en.m477.EyeSpy.Listeners;
+package uk.co.m4numbers.EyeSpy.Listeners;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -10,7 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.*;
 import org.bukkit.event.Listener;
 
-import en.m477.EyeSpy.Logging.Logging;
+import uk.co.m4numbers.EyeSpy.Logging.Logging;
 
 /**
  * The main Block Listener class, everything in here is an action upon a block, whether it be movement, breaking, placing or burning... it's here.
@@ -32,7 +32,7 @@ public class BlockListener implements Listener {
 	}
 	
 	/**
-	 * Block Break listener. Once a block is broken, it sends the variables to the en.m477.EyeSpy.Logging.Logging class to be placed into the SQL string, 0 means break.
+	 * Block Break listener. Once a block is broken, it sends the variables to the uk.co.m4numbers.EyeSpy.Logging.Logging class to be placed into the SQL string, 0 means break.
 	 * @param BlockBreakEvent
 	 * @return SQL variables
 	 */
@@ -46,7 +46,7 @@ public class BlockListener implements Listener {
 	}
 	
 	/**
-	 * Block Place listener. Once a block is broken, it sends the variables to the en.m477.EyeSpy.Logging.Logging class to be placed into the SQL string, 1 means place.
+	 * Block Place listener. Once a block is broken, it sends the variables to the uk.co.m4numbers.EyeSpy.Logging.Logging class to be placed into the SQL string, 1 means place.
 	 * @param BlockPlaceEvent
 	 * @return SQL variables
 	 */

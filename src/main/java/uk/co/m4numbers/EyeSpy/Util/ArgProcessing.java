@@ -1,4 +1,4 @@
-package en.m477.EyeSpy.Util;
+package uk.co.m4numbers.EyeSpy.Util;
 
 public class ArgProcessing {
 

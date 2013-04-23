@@ -1,4 +1,4 @@
-package en.m477.EyeSpy.Logging;
+package uk.co.m4numbers.EyeSpy.Logging;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import en.m477.EyeSpy.EyeSpy;
-import en.m477.EyeSpy.Util.ArgProcessing;
+import uk.co.m4numbers.EyeSpy.EyeSpy;
+import uk.co.m4numbers.EyeSpy.Util.ArgProcessing;
 
 	/**
 	 * Main logging class... logs stuff.
@@ -263,7 +263,7 @@ public class Logging implements Runnable {
     }
     
     /**
-     * Adds the new block events found in the en.m477.EyeSpy.Listeners.BlockListener class. Each one fulfils the requirements for a standard SQL string.
+     * Adds the new block events found in the uk.co.m4numbers.EyeSpy.Listeners.BlockListener class. Each one fulfils the requirements for a standard SQL string.
      * @param name The name of the entity that triggered the block change
      * @param type The block that was changed, in ID form. This will be translated within the website
      * @param data Any additional data that the block possesses, such as direction
