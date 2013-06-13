@@ -5,3 +5,4 @@ EyeSpy:
     password: ""
     database: "testing"
     prefix: "eyespy_"
+    port: "3306"

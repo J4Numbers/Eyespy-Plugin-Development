@@ -24,6 +24,7 @@ public class EyeSpy extends JavaPlugin{
 	
 	public EyeSpy plugin;
 	public Logger log = Logger.getLogger("Minecraft");
+	private int runner;
 	
 	public static String version;
 	public static String name;
@@ -35,6 +36,7 @@ public class EyeSpy extends JavaPlugin{
 	public static String host;
 	public static String username;
 	public static String password ;
+	public static int port;
 	public static String database;
 	public static String prefix;
 	
@@ -79,6 +81,7 @@ public class EyeSpy extends JavaPlugin{
         //Collect Database information
         
         host     = getConfig().getString("EyeSpy.database.host");
+        port     = getConfig().getInt("EyeSpy.database.port");
         username = getConfig().getString("EyeSpy.database.username");
         password = getConfig().getString("EyeSpy.database.password");
         database = getConfig().getString("EyeSpy.database.database");
@@ -92,6 +95,8 @@ public class EyeSpy extends JavaPlugin{
         if (!Logging.sql) {
         	printSevere("SQL database NOT activated!");
         }
+        
+        runner = getServer().getScheduler().scheduleSyncRepeatingTask(this, sqldb.new maintainConnection(), 2400L, 2400L);
         
         printInfo("EyeSpy has been enabled!");
         
@@ -107,6 +112,7 @@ public class EyeSpy extends JavaPlugin{
     @Override
     public void onDisable() {
     	Logging.killConnection();
+    	getServer().getScheduler().cancelTask(runner);
     	printInfo("EyeSpy has been disabled!");
     }
     

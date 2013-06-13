@@ -27,6 +27,7 @@ public class Logging {
 	public static Connection conn;
 	private static String host;
 	private static String database;
+	private static int port;
 	public static boolean sql;
 	
 	//List all the prepared statements that we're going to be using at one point or another
@@ -49,6 +50,7 @@ public class Logging {
     public Logging() {
         Logging.host = EyeSpy.host;
         Logging.database = EyeSpy.database;
+        Logging.port = EyeSpy.port;
     }
 	
     /**
@@ -61,7 +63,6 @@ public class Logging {
 		  createTables( prefix );
 		  }
 		prepareStatements( prefix );
-		
 	}
 	
 	/**
@@ -69,7 +70,7 @@ public class Logging {
 	 */
     protected void startConnection() {
     	sql = true;
-        String sqlUrl = String.format("jdbc:mysql://%s/%s", host, database);
+        String sqlUrl = String.format("jdbc:mysql://%s/%s", host, port, database);
         
 	    String username = EyeSpy.username;
 	    String password = EyeSpy.password;
@@ -318,7 +319,7 @@ public class Logging {
     /**
      * Get the runnable stuff sorted.
      */
-    public Runnable maintainConnection = new Runnable() {
+    public class maintainConnection implements Runnable {
     	
     	public void run() {
     		try {
