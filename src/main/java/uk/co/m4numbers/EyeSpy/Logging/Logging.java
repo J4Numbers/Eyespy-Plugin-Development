@@ -18,17 +18,18 @@ import uk.co.m4numbers.EyeSpy.Util.ArgProcessing;
 	 */
 
 	/* Notes for creation
-	 * TODO Create a connection class
 	 * TODO Create a class for adding chest entries
 	 */
 
 public class Logging {
 	
+	//Start with all the usual variables to maintain a connection
 	public static Connection conn;
 	private static String host;
 	private static String database;
 	public static boolean sql;
 	
+	//List all the prepared statements that we're going to be using at one point or another
 	private static PreparedStatement Maintain;
 	private static PreparedStatement InsertChat;
 	private static PreparedStatement SelectChannel;
@@ -86,17 +87,26 @@ public class Logging {
         }
     }
     
+    /**
+     * Kill the connection cleanly. Basically just the one command, but hey... gotta do something.
+     */
     public static void killConnection() {
-    	EyeSpy.printInfo("Closing the connection...");
-    	try {
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	EyeSpy.printInfo("Connection has been closed.");
+    	if ( sql ) {
+    		EyeSpy.printInfo("Closing the connection...");
+    		try {
+    			conn.close();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		EyeSpy.printInfo("Connection has been closed.");
+    	}
     }
     
+    /**
+     * Alright, we have all the statements, lets build them up and create usable commands from them.
+     * @param prefix : Use this to build the statements, affixing it to all the table descriptors.
+     */
     protected void prepareStatements( String prefix ) {
     	try {
     		Maintain = conn.prepareStatement("SELECT count(*) FROM `" + prefix + "chat` limit 1;");
@@ -149,6 +159,7 @@ public class Logging {
             }
             rs.close();
         
+            //Servers
             EyeSpy.printInfo("Searching for Servers table");
             rs = conn.getMetaData().getTables(null, null, prefix + "servers", null);
             if (!rs.next()) {
@@ -305,8 +316,7 @@ public class Logging {
     }
     
     /**
-     * Thanks to Serubin for his use of this maintainConnection class to stop the database from timing out and ending the connection needed to run smoothly.
-     * @author Serubin323, Solomon Rubin
+     * Get the runnable stuff sorted.
      */
     public Runnable maintainConnection = new Runnable() {
     	
@@ -317,7 +327,7 @@ public class Logging {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
     		}
-    		EyeSpy.self.log.info("EyeSpy has checked in with database");
+    		EyeSpy.printInfo("EyeSpy has checked in with database");
     	}
     };
     
@@ -357,7 +367,8 @@ public class Logging {
     /**
      * Adds any chatter that occurs on the server into the database. This requires that the server is running HeroChat
      * @param name The name of the player sending the chatter
-     * @param ch_name The name of the channel the chatter is occuring within
+     * @param ch_name The name of the channel the chatter is occurring within
+     * @param Server The name of the server that everything is being sent on
      * @param Message The actual chatter
      * @throws e.printStackTrace If the command fails
      */
@@ -379,6 +390,7 @@ public class Logging {
     /**
      * Adds any commands used on the server into the database.
      * @param name This is the name of the entity sending the command
+     * @param Server The name of the server that the commands are being executed on
      * @param Message This is the command itself
      * @throws e.printStackTrace If the command should fail
      */
@@ -452,9 +464,14 @@ public class Logging {
 		return plId;
 	}
 	
+	/**
+	 * Lets look at the servers we have available and give the log a server reference.
+	 * @param Server The server 
+	 * @return serId : The ID number of the server that we're working with
+	 */
 	public static int ServerExists(String Server) {
 		ResultSet rs = null;
-		int chId = 0;
+		int serId = 0;
 		try {
 			SelectServer.setString(1, Server);
 			rs = SelectServer.executeQuery();
@@ -466,12 +483,12 @@ public class Logging {
 			rs = SelectServer.executeQuery();
 			rs.first();
 			SelectServer.clearParameters();
-			chId = rs.getInt("ser_id");
+			serId = rs.getInt("ser_id");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return chId;
+		return serId;
 	}
 	
 	/**

@@ -21,7 +21,6 @@ public class CommandListener implements Listener {
 	/**
 	 * Triggered when a command is entered, the message is recorded as is the player name, and both are sent to the logging class for processing.
 	 * @param PlayerCommandPreprocessEvent
-	 * @return SQL variables
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onPlayerCommand( PlayerCommandPreprocessEvent event ) {
