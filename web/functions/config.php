@@ -5,5 +5,6 @@
 	$dbpass = '';#'c0fFe@';
 	$dbES = 'testing';#'eyespy';
 	$dbforum = 'pr_forum';#'escapecr_forum';
+	$prefix = 'eyespy_';
 
 ?>
