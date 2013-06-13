@@ -4,10 +4,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.herocraftonline.dthielke.herochat.channels.Channel;
-import com.herocraftonline.dthielke.herochat.event.ChannelChatEvent;
+import com.ensifera.animosity.craftirc.Minebot;
+
+import com.dthielke.herochat.Channel;
+import com.dthielke.herochat.ChannelChatEvent;
 
 import uk.co.m4numbers.EyeSpy.EyeSpy;
 //import uk.co.m4numbers.EyeSpy.EyeSpy;					//Left in for debug purposes at the moment.
@@ -28,24 +29,20 @@ public class ChatListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onPlayerChat( ChannelChatEvent event ) {
-		String name = null;
-		if ( event.isSentByPlayer() ) {
-			name = event.getSource();
-		} else {
-			name = "Server";
-		}
+		String name = event.getSender().getName();
 		Channel channel = event.getChannel();
-		String ch_name = channel.getCName();
+		String ch_name = channel.getName();
 		Message = event.getMessage();
-		Logging.addNewChat(name, ch_name, Message);
+		Logging.addNewChat(name, ch_name, EyeSpy.Server, Message);
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public static void onPlayerTalk( AsyncPlayerChatEvent event ) {
-		Player Player = event.getPlayer();
-		String plName = Player.getName();
-		String Message = event.getMessage();
-		
-		EyeSpy.printInfo(plName + " : " + Message);
-	}
+	//@EventHandler(priority = EventPriority.MONITOR)
+	//public static void onPlayerTalk( AsyncPlayerChatEvent event ) {
+	//	Player Player = event.getPlayer();
+	//	String plName = Player.getName();
+	//	String Message = event.getMessage();
+	//	
+	//	EyeSpy.printInfo(plName + " : " + Message);
+	//}
+	
 }

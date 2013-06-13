@@ -5,6 +5,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.Listener;
 
+import uk.co.m4numbers.EyeSpy.EyeSpy;
 import uk.co.m4numbers.EyeSpy.Logging.Logging;
 
 /**
@@ -26,6 +27,6 @@ public class CommandListener implements Listener {
 	public static void onPlayerCommand( PlayerCommandPreprocessEvent event ) {
 		String name = event.getPlayer().getName();
 		Message = event.getMessage();
-		Logging.addNewCommand(name, Message);
+		Logging.addNewCommand(name, EyeSpy.Server, Message);
 	}
 }

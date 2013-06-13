@@ -8,6 +8,11 @@ import uk.co.m4numbers.EyeSpy.Logging.Logging;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
@@ -22,6 +27,7 @@ public class EyeSpy extends JavaPlugin{
 	
 	public static String version;
 	public static String name;
+	public static String Server;
 	public static EyeSpy self = null;
 	
 	Logging db;
@@ -30,6 +36,9 @@ public class EyeSpy extends JavaPlugin{
 	public static String username;
 	public static String password ;
 	public static String database;
+	public static String prefix;
+	
+	public static Properties props = new Properties();
 	
 	/**
 	 * This is the onEnable class for when the plugin starts up. Basic checks are run for the version, name and information of the plugin, then startup occurs.
@@ -39,6 +48,7 @@ public class EyeSpy extends JavaPlugin{
         
         version = this.getDescription().getVersion();
         name = this.getDescription().getName();
+        Server = this.getServer().getName();
         self = this;
         log.info(name + " version " + version + " has started...");
         
@@ -46,12 +56,30 @@ public class EyeSpy extends JavaPlugin{
         getConfig().options().copyDefaults(true);
         saveConfig();
         
+        props.setProperty("#mine", "Global");
+        props.setProperty("#dev", "Dev");
+        props.setProperty("#help", "Support");
+        props.setProperty("#mods", "Mods");
+        props.setProperty("#new", "New");
+        props.setProperty("#trade", "Trade");
+        try {
+			props.store(new FileOutputStream("chan.properties"), null);
+			printInfo("Properties stored.");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         //Collect Database information
         
-        host = getConfig().getString("EyeSpy.database.host");
+        host     = getConfig().getString("EyeSpy.database.host");
         username = getConfig().getString("EyeSpy.database.username");
         password = getConfig().getString("EyeSpy.database.password");
         database = getConfig().getString("EyeSpy.database.database");
+        prefix   = getConfig().getString("EyeSpy.database.prefix");
         
         Logging sqldb = new Logging();
         
@@ -74,7 +102,7 @@ public class EyeSpy extends JavaPlugin{
 	 */
     @Override
     public void onDisable() {
-    	
+    	Logging.killConnection();
     	printInfo("EyeSpy has been disabled!");
         // TODO Insert logic to be performed when the plugin is disabled
     }
@@ -105,6 +133,19 @@ public class EyeSpy extends JavaPlugin{
     
     public static void printDebug(String line) {
       self.log.info("[EyeSpy DEBUG] " + line);
+    }
+    
+    public static String ircToGame( String channel ) {
+    	try {
+			props.load( new FileInputStream("chan.properties") );
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return props.getProperty(channel);
     }
     
 }

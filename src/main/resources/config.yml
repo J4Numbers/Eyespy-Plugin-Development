@@ -4,3 +4,4 @@ EyeSpy:
     username: "root"
     password: ""
     database: "testing"
+    prefix: "eyespy_"
