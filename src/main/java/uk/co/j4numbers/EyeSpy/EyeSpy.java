@@ -46,16 +46,19 @@ public class EyeSpy extends JavaPlugin{
 	@Override
     public void onEnable(){
         
+		//Lets get the basics ready.
         version = this.getDescription().getVersion();
         name = this.getDescription().getName();
         Server = this.getServer().getName();
         self = this;
         log.info(name + " version " + version + " has started...");
         
+        //Start up the managers and the configs and all that
         PluginManager pm = getServer().getPluginManager();
         getConfig().options().copyDefaults(true);
         saveConfig();
         
+        //Load in the properties for the IRC channels and store them in the respective file.
         props.setProperty("#mine", "Global");
         props.setProperty("#dev", "Dev");
         props.setProperty("#help", "Support");
@@ -81,6 +84,7 @@ public class EyeSpy extends JavaPlugin{
         database = getConfig().getString("EyeSpy.database.database");
         prefix   = getConfig().getString("EyeSpy.database.prefix");
         
+        //Bring in the logging stuffs and start it all up
         Logging sqldb = new Logging();
         
         sqldb.startSql();
@@ -91,25 +95,24 @@ public class EyeSpy extends JavaPlugin{
         
         printInfo("EyeSpy has been enabled!");
         
+        //Register the listeners.
         pm.registerEvents(new ChatListener(), this);
         pm.registerEvents(new CommandListener(), this);
         //pm.registerEvents(new BlockListener(), this); Excluded for this build
-        // TODO Insert logic to be performed when the plugin is enabled		
     }
  
 	/**
-	 * The disable needs work to be completed, namely a routine which cuts connection with the database a bit more elegantly than it currently does.
+	 * The routine to kill the connection cleanly and show that it has been done.
 	 */
     @Override
     public void onDisable() {
     	Logging.killConnection();
     	printInfo("EyeSpy has been disabled!");
-        // TODO Insert logic to be performed when the plugin is disabled
     }
     
     /**
      * Prints a SEVERE warning to the console.
-     * @param line This is the error message
+     * @param line : This is the error message
      */
     public static void printSevere(String line) {
       self.log.severe("[EyeSpy] " + line);
@@ -117,7 +120,7 @@ public class EyeSpy extends JavaPlugin{
     
     /**
      * Prints a WARNING to the console.
-     * @param line This is the error message
+     * @param line : This is the error message
      */
     public static void printWarning(String line) {
       self.log.warning("[EyeSpy] " + line);
@@ -125,16 +128,25 @@ public class EyeSpy extends JavaPlugin{
     
     /**
      * Prints INFO to the console
-     * @param line This is the information
+     * @param line : This is the information
      */
     public static void printInfo(String line) {
       self.log.info("[EyeSpy] " + line);
     }
     
+    /**
+     * Prints DEBUG info to the console
+     * @param line : This contains the information to be outputted
+     */
     public static void printDebug(String line) {
       self.log.info("[EyeSpy DEBUG] " + line);
     }
     
+    /**
+     * This function will convert the IRC channel names into their herochat equivalents.
+     * @param channel : This is the IRC channel that we're inputting
+     * @return String : This is the Herochat equivalent of the channel.
+     */
     public static String ircToGame( String channel ) {
     	try {
 			props.load( new FileInputStream("chan.properties") );
