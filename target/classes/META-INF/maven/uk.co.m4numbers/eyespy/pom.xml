@@ -12,7 +12,7 @@
           <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
     </repository>
     <repository>
-          <id>herochat-repo</id>
+          <id>dev-repo</id>
           <url>http://dev.escapecraft.com/maven</url>
     </repository>
         <!-- Bukkit can be found at the following repository -->
@@ -48,6 +48,11 @@
   <dependencies>
       <!-- Dependency information -->
       <dependency>
+          <groupId>com.ensifera.animosity</groupId>
+          <artifactId>craftirc</artifactId>
+          <version>3.9.4</version>
+      </dependency>
+      <dependency>
           <groupId>net.milkbowl.vault</groupId>
           <artifactId>Vault</artifactId>
           <version>1.2.23-SNAPSHOT</version>
@@ -57,16 +62,36 @@
           <groupId>org.bukkit</groupId>
           <artifactId>bukkit</artifactId>
           <!-- Bukkit API Version, change if nessesary -->
-          <version>1.5.1-R0.1</version>
+          <version>1.5.2-R0.1</version>
       </dependency>
       <dependency>
           <groupId>com.herocraftonline</groupId>
           <artifactId>HeroChat</artifactId>
-          <version>4.10.3.2</version>
+          <version>5.6.6.b214</version>
       </dependency>
   </dependencies>
     
+  <distributionManagement>
+   <repository>
+     <id>dev-repo</id>
+     <name>dev.escapecraft.com Releases</name>
+     <url>scp://dev.escapecraft.com/var/www/maven</url>
+   </repository>
+   <snapshotRepository>
+     <id>dev-repo-snap</id>
+     <name>dev.escapecraft.com Snapshots</name>
+     <url>scp://dev.escapecraft.com/var/www/maven</url>
+   </snapshotRepository>
+  </distributionManagement>
+  
   <build>
+    <extensions>
+     <extension>
+       <groupId>org.apache.maven.wagon</groupId>
+       <artifactId>wagon-ssh</artifactId>
+       <version>2.2</version>
+     </extension>
+    </extensions>
     <pluginManagement>
       <plugins>
         <plugin>
