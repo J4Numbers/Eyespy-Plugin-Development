@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -39,6 +40,8 @@ public class EyeSpy extends JavaPlugin{
 	public static int port;
 	public static String database;
 	public static String prefix;
+	public static List<String> ignore;
+	public static boolean debug;
 	
 	public static Properties props = new Properties();
 	
@@ -51,7 +54,6 @@ public class EyeSpy extends JavaPlugin{
 		//Lets get the basics ready.
         version = this.getDescription().getVersion();
         name = this.getDescription().getName();
-        Server = this.getServer().getName();
         self = this;
         log.info(name + " version " + version + " has started...");
         
@@ -86,11 +88,20 @@ public class EyeSpy extends JavaPlugin{
         password = getConfig().getString("EyeSpy.database.password");
         database = getConfig().getString("EyeSpy.database.database");
         prefix   = getConfig().getString("EyeSpy.database.prefix");
+        Server   = getConfig().getString("EyeSpy.other.servername");
+        ignore   = getConfig().getStringList("EyeSpy.other.ignore");
+        debug    = getConfig().getBoolean("EyeSpy.other.debug", false);
         
         //Bring in the logging stuffs and start it all up
         Logging sqldb = new Logging();
         
         sqldb.startSql();
+        
+        if ( debug=true ) {
+        	for ( int i=0; i<ignore.size(); i++ ) {
+        		printDebug( i + " : " + ignore.get(i) );
+        	}
+        }
         
         if (!Logging.sql) {
         	printSevere("SQL database NOT activated!");

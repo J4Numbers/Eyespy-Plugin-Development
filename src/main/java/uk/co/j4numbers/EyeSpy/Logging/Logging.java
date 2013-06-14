@@ -70,7 +70,7 @@ public class Logging {
 	 */
     protected void startConnection() {
     	sql = true;
-        String sqlUrl = String.format("jdbc:mysql://%s/%s", host, port, database);
+        String sqlUrl = String.format("jdbc:mysql://%s:%s/%s", host, port, database);
         
 	    String username = EyeSpy.username;
 	    String password = EyeSpy.password;
@@ -374,6 +374,13 @@ public class Logging {
      * @throws e.printStackTrace If the command fails
      */
     public static void addNewChat(String name, String ch_name, String Server, String Message) {
+    	if ( EyeSpy.debug=true ) {
+    		EyeSpy.printDebug( name + " : [" + ch_name + "] : [" + Server + "] : " + Message );
+    		if ( EyeSpy.ignore.contains(name) ) {
+    			EyeSpy.printDebug("Ignored.");
+    			return;
+    		}
+    	}
     	try {
 			InsertChat.setInt( 1, playerExists(name) );
 			InsertChat.setInt( 2, channelExists(ch_name) );
