@@ -90,14 +90,19 @@ public class EyeSpy extends JavaPlugin{
         prefix   = getConfig().getString("EyeSpy.database.prefix");
         Server   = getConfig().getString("EyeSpy.other.servername");
         ignore   = getConfig().getStringList("EyeSpy.other.ignore");
-        debug    = getConfig().getBoolean("EyeSpy.other.debug", false);
-        
+        if ( getConfig().getString("EyeSpy.other.debug").equalsIgnoreCase("true") ) {
+        	debug = true;
+        	printInfo("Debugging enabled!");
+        } else {
+        	debug = false;
+        	printInfo("Debugging disabled!");
+        }
         //Bring in the logging stuffs and start it all up
         Logging sqldb = new Logging();
         
         sqldb.startSql();
         
-        if ( debug=true ) {
+        if ( debug==true ) {
         	for ( int i=0; i<ignore.size(); i++ ) {
         		printDebug( i + " : " + ignore.get(i) );
         	}

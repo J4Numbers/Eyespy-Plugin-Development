@@ -374,12 +374,14 @@ public class Logging {
      * @throws e.printStackTrace If the command fails
      */
     public static void addNewChat(String name, String ch_name, String Server, String Message) {
-    	if ( EyeSpy.debug=true ) {
+    	if ( EyeSpy.debug==true ) {
     		EyeSpy.printDebug( name + " : [" + ch_name + "] : [" + Server + "] : " + Message );
-    		if ( EyeSpy.ignore.contains(name) ) {
+    	}
+    	if ( EyeSpy.ignore.contains(name) ) {
+    		if ( EyeSpy.debug==true ){
     			EyeSpy.printDebug("Ignored.");
-    			return;
     		}
+    		return;
     	}
     	try {
 			InsertChat.setInt( 1, playerExists(name) );
