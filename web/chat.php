@@ -2,32 +2,40 @@
 require_once './functions/page.php';
 require './functions/config.php';
 require_once './functions/main.php';
+	session_start();
+	define('IN_PHPBB', true);
+	$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../phpBB3/';
+	$phpEx = substr(strrchr(__FILE__, '.'), 1);
+	include($phpbb_root_path . 'common.' . $phpEx);
+	
+	require_once $phpbb_root_path.'/includes/functions_user.php';
 
-session_start();
+	// Start session management
+	$user->session_begin();
+	$auth->acl($user->data);
+	$user->setup();
+	
+    if ( $user->data['is_registered'] ) {
+		if ( !group_memberships( Array( 5, 8 ), $user->data['user_id'] ) ) {
+			header("Location: login-failed.php");
+			die();
+		}
+    } else {
+		header("Location: login.php");
+		die();
+	}
 
-$style = "<link rel='stylesheet' href='./js/jquery-ui.css' />
-		<link rel='stylesheet' href='./js/jquery.ui.timepicker.css' />
-		<script src='./js/jquery-1.9.1.js'></script>
-		<script src='./js/jquery-ui.js'></script>
-		<script src='./js/jquery.ui.timepicker.js'></script>
-
-		<script>
+$style = "<script>
 			$(function() {
-			$( '#datepicker' ).datepicker();
+			$( '#dateto' ).datepicker();
+			$( '#datefrom' ).datepicker();
 			});
 			
 			$(function() {
-			$( '#timepicker' ).timepicker();
+			$( '#timefrom' ).timepicker();
+			$( '#timeto' ).timepicker();
 			});
 		</script>";
-
-if ( !isset($_SESSION['loggedIn']) ) {
-    if (isset($_SESSION['active']))
-        session_destroy();
-    session_start();
-    $_SESSION['active'] = "1";
-    header("Location: login.php");
-}
 
 if ( @$_POST["Player"] == '' ) {
     $Player = "";
@@ -41,51 +49,97 @@ if ( @$_POST["Channel"] == '' ) {
     $Channel = $_POST["Channel"];
 }
 
+$a1 = 0;
+$a2 = 99999999999;
+
+if ( @$_POST["D1"] != '' ) {
+	$a1 = strtotime( $_POST["D1"] );
+}
+
+if ( @$_POST["T1"] != '' ) {
+	$time1 = explode( ':', $_POST["T1"] );
+	$newtime = ( $time1[0] * 60 * 60 ) + ( $time1[1] * 60 );
+	$a1 = $a1 + $newtime;
+}
+
+if ( @$_POST["D2"] != '' ) {
+	$a2 = strtotime( $_POST["D2"]);
+}
+
+if ( @$_POST["T2"] != '' ) {
+	$time2 = explode( ':', $_POST["T2"] );
+	$newtime = ( $time2[0] * 60 * 60 ) + ( $time2[1] * 60 );
+	$a2 = $a2 + $newtime;
+}
+
+$DateQuery = "AND ( `date` BETWEEN ".$a1." AND ".$a2." )";
+
 sqlConnect( $dbES );
 
-	$result = mysql_query("SELECT * FROM chat 
-                            JOIN chatchannels ON chat.ch_id=chatchannels.ch_id
-                            JOIN players ON chat.player_id=players.player_id
+$sql = "SELECT * FROM ".$prefix."chat 
+                            JOIN ".$prefix."chatchannels ON ".$prefix."chat.ch_id=".$prefix."chatchannels.ch_id
+                            JOIN ".$prefix."players ON ".$prefix."chat.player_id=".$prefix."players.player_id
+                            JOIN ".$prefix."servers ON ".$prefix."chat.ser_id=".$prefix."servers.ser_id
                             WHERE ch_name LIKE '%" . mysql_real_escape_string( $Channel ) . "%' 
 							AND pl_name LIKE '%" . mysql_real_escape_string( $Player ) . "%'
-							ORDER BY `date` DESC");
+							".$DateQuery."
+							ORDER BY `date` DESC";
 
-    $output .= "<table border='2'>
+	$result = mysql_query( $sql );
+
+    $output .= "<a id='toggle' onclick='showorhide(\"toggle\")' >Filter</a>
+	
+			<div id='showhide' ><table><form name='input' action='chat.php' method='post'>
+            <tr>
+				<td>Player: </td>
+				<td><input type='text' name='Player' /></td>
+				<td>Channel: </td>
+				<td><input type='text' name='Channel' /></td>
+			</tr><tr>
+				<td>Date From: </td>
+				<td><input type='text' id='datefrom' name='D1' readonly='true' /></td>
+				<td>Date To: </td>
+				<td><input type='text' id='dateto' name='D2' readonly='true' /></td>
+			</tr><tr>
+				<td>Time From: </td>
+				<td><input type='text' id='timefrom' name='T1' readonly='true' /></td>
+				<td>Time To: </td>
+				<td><input type='text' id='timeto' name='T2' readonly='true' /></td>
+			</tr><tr>
+				<td colspan='4'><span align='center'><input type='submit' value='Filter' /></span></td>
+			</tr>
+		</table></form></div>
+		<table border='2'>
                 <thead>
-                    <td>Chat ID</td>
-                    <td>Date and Time</td>
-                    <td>Player</td>
-                    <td>Channel</td>
+                    <td width='150px'>Date and Time</td>
+					<td width='110px'>Server</td>
+                    <td width='125px'>Player</td>
+                    <td width='100px'>Channel</td>
                     <td>Message</td>
                 </thead>";
     
+	$acount = 1;
+	$output .= "";
     while($row = mysql_fetch_array($result))
         {
             $output .= "<tr>";
-            $output .= "<td>" . $row['chat_id'] . "</td>";
             $output .= "<td>" . date( "Y-m-d H:i:s" , $row['date'] + DST($_SESSION['loggedIn']) ) . "</td>";
+			$output .= "<td>" . $row['ser_name'] . "</td>";
             $output .= "<td>" . $row['pl_name'] . "</td>";
             $output .= "<td>" . $row['ch_name'] . "</td>";
             $output .= "<td>" . $row['message'] . "</td>";
-            $output .= "<br />";
+			$acount++;
+			if ( $acount == 30 ) {
+				$output .= "";
+			}
         }
     
     $output .=    "</table>";
-    
-    $output .= "<form name='input' action='chat.php' method='post'>
-            Player: <input type='text' name='Player' /><br />
-            Channel: <input type='text' name='Channel' /><br />
-			Date From: <input type='text' id='datepicker' name='D1' /><br />
-			Time From: <input type='text' id='timeFrom' name='T1' /><br />
-			Date To: <input type='text' id='datepicker' name='D2' /><br />
-			Time To: <input type='text' id='timeTo' name='T2' /><br />
-            <input type='submit' value='Filter' />
-            </form>";
 mysql_close();
 ?> 
 
 <HTML>
 	<?php HeaderThing( 'Chat', $style ); ?>
-		<?php echo $output; ?>
+		<?php echo $output;# . $sql; ?>
 	<?php FooterThing(); ?>
 </HTML>

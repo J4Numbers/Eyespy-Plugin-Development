@@ -3,19 +3,27 @@
 	require './functions/config.php';
 	require_once './functions/main.php';
 	session_start();
-	unset( $fail );
-    if (isset($_SESSION['loggedIn'])) 
-        header( "Location: index.php" );
-        
-    if (!isset($_SESSION['active'])) {
-        $_SESSION['active'] = "1";
-    }
-    
-    if ( @$_POST['user'] != '' ) {
-        $username = $_POST['user'];
-        $password = $_POST['pass'];
-		sqlConnect( $dbforum );
-		login( $username, $password );
+	
+	define('IN_PHPBB', true);
+	$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../phpBB3/';
+	$phpEx = substr(strrchr(__FILE__, '.'), 1);
+	include($phpbb_root_path . 'common.' . $phpEx);
+	
+	require_once $phpbb_root_path.'/includes/functions_user.php';
+
+	// Start session management
+	$user->session_begin();
+	$auth->acl($user->data);
+	$user->setup();
+	
+	if ( $user->data['is_registered'] ) {
+		if ( !group_memberships( Array( 5, 8 ), $user->data['user_id'] ) ) {
+			header("Location: login-failed.php");
+			die();
+		} else {
+			header("Location: index.php");
+			die();
+		}
     }
     
     $output = "login <br />";
@@ -24,10 +32,12 @@
 	}
     $output .= "<br />";
     
-    $output .= "<form name='input' action='login.php' method='post'>
-          <table><tr><td>Username:</td><td><input type='text' name='user' /></td></tr>
-          <tr><td>Password:</td><td><input type='password' name='pass' /></td></tr></table>
-          <input type='submit' value='Login' />
+    $output .= "<form action='".$phpbb_root_path."/ucp.php?mode=login' method='post'>
+          <table>
+		  <tr><td>Username:</td><td><input type='text' name='username' size='20' title='Username' /></td></tr>
+          <tr><td>Password:</td><td><input type='password' name='password' size='20' title='Password' /></td></tr></table>
+          <input id='login_button' type='submit' name='login' value='Login' />
+		  <input type='hidden' id='login_redirect' name='redirect' value='http://qa.wokka.org/m477/web/index.php' />
           </form>";
 ?>
 

@@ -1,8 +1,11 @@
 .main {
 	background-color: #ffffff;
 	width: 1100px;
-	height: auto;
+	min-height: 100%;
+	height: 100% auto;
 	margin: 0 auto;
+	padding: 5px;
+	padding-top: 0px;
 }
 
 body {
@@ -20,6 +23,31 @@ body {
 	border-bottom-right-radius: 5px;
 }
 
+ .toggle {  
+	width: 90%;
+	padding-left:20px;
+	padding-top:18px;
+	cursor: pointer;
+	background-position : 4px -19px;
+	background-repeat : no-repeat;
+ }
+  
+ .showhide {  
+	width: 80%;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-left: 50px;
+	display: none;
+ }
+
+ .active {
+	background-repeat:no-repeat;
+	background-position : 4px 11px;
+ }
+
+ .toggle a{color:#00F;text-decoration:underline}
+ .toggle a:hover{text-decoration:underline}
+
 #img {
 	margin: 10px;
 	margin-top: 0px;
@@ -31,8 +59,8 @@ body {
 	position: relative;
 	color: white;
 	text-align: center;
-	bottom: 0px;
 	margin: 5px;
+	padding: 5px;
 }
 
 .footer a {
