@@ -43,6 +43,12 @@ if ( @$_POST["Player"] == '' ) {
     $Player = $_POST["Player"];
 }
 
+if ( @$_POST["Server"] == '' ) {
+    $Server = "";
+} else {
+    $Server = $_POST["Server"];
+}
+
 if ( @$_POST["Channel"] == '' ) {
     $Channel = "";
 } else {
@@ -81,6 +87,7 @@ $sql = "SELECT * FROM ".$prefix."chat
                             JOIN ".$prefix."players ON ".$prefix."chat.player_id=".$prefix."players.player_id
                             JOIN ".$prefix."servers ON ".$prefix."chat.ser_id=".$prefix."servers.ser_id
                             WHERE ch_name LIKE '%" . mysql_real_escape_string( $Channel ) . "%' 
+							AND ser_name LIKE '%" . mysql_real_escape_string( $Server ) . "%' 
 							AND pl_name LIKE '%" . mysql_real_escape_string( $Player ) . "%'
 							".$DateQuery."
 							ORDER BY `date` DESC";
@@ -90,7 +97,9 @@ $sql = "SELECT * FROM ".$prefix."chat
     $output .= "<a id='toggle' onclick='showorhide(\"toggle\")' >Filter</a>
 	
 			<div id='showhide' ><table><form name='input' action='chat.php' method='post'>
-            <tr>
+			<tr><td colspan='2'>Server: </td>
+				<td><input type='text' name='Server' /></td>
+			</tr><tr>
 				<td>Player: </td>
 				<td><input type='text' name='Player' /></td>
 				<td>Channel: </td>
@@ -109,12 +118,12 @@ $sql = "SELECT * FROM ".$prefix."chat
 				<td colspan='4'><span align='center'><input type='submit' value='Filter' /></span></td>
 			</tr>
 		</table></form></div>
-		<table border='2'>
+		<table border='2' style='max-width:100%;text-align:left;'>
                 <thead>
-                    <td width='150px'>Date and Time</td>
-					<td width='110px'>Server</td>
-                    <td width='125px'>Player</td>
-                    <td width='100px'>Channel</td>
+                    <td style='min-width:150px;'>Date and Time</td>
+					<td style='min-width:110px;'>Server</td>
+                    <td style='min-width:125px;'>Player</td>
+                    <td style='min-width:100px;'>Channel</td>
                     <td>Message</td>
                 </thead>";
     
@@ -123,11 +132,11 @@ $sql = "SELECT * FROM ".$prefix."chat
     while($row = mysql_fetch_array($result))
         {
             $output .= "<tr>";
-            $output .= "<td>" . date( "Y-m-d H:i:s" , $row['date'] + DST($_SESSION['loggedIn']) ) . "</td>";
+            $output .= "<td>" . date( "Y-m-d H:i:s" , $row['date'] + DST( $user ) ) . "</td>";
 			$output .= "<td>" . $row['ser_name'] . "</td>";
             $output .= "<td>" . $row['pl_name'] . "</td>";
             $output .= "<td>" . $row['ch_name'] . "</td>";
-            $output .= "<td>" . $row['message'] . "</td>";
+            $output .= "<td id='message'>" . $row['message'] . "</td>";
 			$acount++;
 			if ( $acount == 30 ) {
 				$output .= "";

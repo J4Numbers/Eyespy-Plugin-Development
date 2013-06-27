@@ -36,6 +36,12 @@ $style = "<script>
 			$( '#timeto' ).timepicker();
 			});
 		</script>";
+		
+if ( @$_POST["Server"] == '' ) {
+    $Server = "";
+} else {
+    $Server = $_POST["Server"];
+}
 
 if ( @$_POST["cPlayer"] == '' ) {
     $cPlayer = "";
@@ -72,11 +78,12 @@ sqlConnect( $dbES );
 	$sql = "SELECT * FROM ".$prefix."commands
             JOIN ".$prefix."players ON ".$prefix."commands.player_id=".$prefix."players.player_id
             JOIN ".$prefix."servers ON ".$prefix."commands.ser_id=".$prefix."servers.ser_id
-            WHERE pl_name LIKE '%" . mysql_real_escape_string( $cPlayer ) . "%'
+            WHERE pl_name LIKE '%" . mysql_real_escape_string( $cPlayer ) . "%' 
+			AND ser_name LIKE '%" . mysql_real_escape_string( $Server ) . "%' 
             ".$DateQuery."
 			ORDER BY `date` DESC";
     $cmdresult = mysql_query( $sql );
-    $output .=    "<table><form name='input' action='chat.php' method='post'>
+    $output .=    "<table><form name='input' action='commands.php' method='post'>
         			    <tr>
 							<td>Player: </td>
 							<td><input type='text' name='Player' /></td>
