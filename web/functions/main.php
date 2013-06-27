@@ -8,15 +8,10 @@ function sqlConnect( $db ) {
 	mysql_select_db( $db );
 }
 
-function DST( $id ) {
-	require './functions/config.php';
-	sqlConnect( $dbforum );
-	$sql = "SELECT `user_id`,`user_timezone`,`user_dst` 
-			FROM `phpbb_users` 
-			WHERE `user_id`='" . $id . "'";
-	$res = mysql_fetch_array( mysql_query( $sql ) );
-	$time = $res['user_timezone'] * ( 60 * 60 );
-	$time += $res['user_dst'] * ( 60 * 60 );
+function DST( $user ) {
+	$time = $user->data['user_timezone'] * ( 60 * 60 );
+	$time += $user->data['user_dst'] * ( 60 * 60 );
+	$time = $time + ( 60 * 60 * 5 );
 	return $time;
 }
 ?>

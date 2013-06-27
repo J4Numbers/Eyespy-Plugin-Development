@@ -21,6 +21,12 @@ function HeaderThing( $title, $head = '' ) {
 				<div id='img'>
 					<a href='./index.php'><img src='./images/EyeSpy.png' height='112px'></a>
 				</div>
+				<div class='menu'>
+					<a class='button' href='./index.php' >Index</a>
+					<a class='button' href='./blocks.php' >Blocks</a>
+					<a class='button' href='./chat.php' >Chat</a>
+					<a class='button' href='./commands.php' >Commands</a>
+				</div>
 			</div>
 			<div class='inner'>";
 	echo $r;
