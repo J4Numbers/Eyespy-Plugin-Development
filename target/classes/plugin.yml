@@ -1,7 +1,0 @@
-name: EyeSpy
-version: 0.0.1
-description: Block and chat logging along with rollback functionality.
-load: STARTUP
-author: m477
-main: uk.co.m4numbers.EyeSpy.EyeSpy
-database: true
